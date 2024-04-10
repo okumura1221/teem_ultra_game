@@ -1,7 +1,7 @@
 #include "DxLib.h"
 #include "Common.h"
 #include "Scene/Play/play.h"
-
+#include "Scene/Title/title.h"
 
 
 //設定フレームレート
@@ -87,16 +87,21 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
 			case SCENE_INIT_TITLE:
 				
+				InitTitle();
 
 				break;
 
 			case SCENE_LOOP_TITLE:
 
+				StepTitle();
+
+				DrawTitle();
 
 				break;
 
 			case SCENE_FIN_TITLE:
 
+				FinTitle();
 
 				break;
 
