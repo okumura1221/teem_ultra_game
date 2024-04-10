@@ -29,13 +29,13 @@ void DrawCalc();
 
 
 //最初のシーン
-SCENE scene=SCENE_INIT_TITLE;
+SCENE scene=SCENE_INIT_PLAY;
 
 
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow )
 {
 	//ウィンドウの状態を設定する
-	ChangeWindowMode(true);
+	ChangeWindowMode(false);
 
 	//DXライブラリの初期化
 	if(DxLib_Init() == -1)

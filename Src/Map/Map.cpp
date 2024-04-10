@@ -58,17 +58,3 @@ void Map::Draw() {
 	}
 }
 
-/*play.cppでの処理
-
-#include "../../Map/Map.h"    //インクルード
-Map CMap;                     //クラスを持ってくる
-
-(InitPlay)
-scene = SCENE_LOOP_PLAY;      //LOOP_PLAYに移動させる処理
-
-	CMap.Init();
-
-(DrawPlay)
-	CMap.Draw();
-
-*/
