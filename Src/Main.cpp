@@ -1,5 +1,8 @@
 #include "DxLib.h"
 #include "Common.h"
+#include "Scene/Play/play.h"
+
+
 
 //設定フレームレート
 #define FRAME_RATE (60)
@@ -99,23 +102,24 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
 			case SCENE_INIT_PLAY:
 					
+				InitPlay();
 
 				break;
 
 			case SCENE_LOOP_PLAY:
 					
+				StepPlay();
+
+				DrawPlay();
 
 				break;
 
 			case SCENE_FIN_PLAY:
 
+				FinPlay();
 
 				break;
 			}
-				
-			
-			
-
 			
 			CalcFps();
 			DrawCalc();

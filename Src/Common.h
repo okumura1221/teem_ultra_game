@@ -3,6 +3,7 @@
 #include "DxLib.h"
 #include "Input/input.h"
 
+
 enum SCENE {
 	SCENE_INIT_TITLE,
 	SCENE_LOOP_TITLE,
