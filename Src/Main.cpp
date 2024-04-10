@@ -1,5 +1,5 @@
 #include "DxLib.h"
-
+#include "Common.h"
 
 //設定フレームレート
 #define FRAME_RATE (60)
@@ -25,6 +25,9 @@ void CalcFps();
 void DrawCalc();
 
 
+//最初のシーン
+SCENE scene=SCENE_INIT_TITLE;
+
 
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow )
 {
@@ -43,6 +46,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	//描画するスクリーンを設定
 	SetDrawScreen(DX_SCREEN_BACK);
 
+
+	Input::Init();
 	
 	//=====================================
 	//ゲームメインループ
@@ -72,8 +77,41 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 			//画面に表示されたものを初期化（１ループの１度だけ行う）
 			ClearDrawScreen();
 
+			Input::Step();
 
-			
+			//シーン遷移
+			switch (scene) {
+
+			case SCENE_INIT_TITLE:
+				
+
+				break;
+
+			case SCENE_LOOP_TITLE:
+
+
+				break;
+
+			case SCENE_FIN_TITLE:
+
+
+				break;
+
+			case SCENE_INIT_PLAY:
+					
+
+				break;
+
+			case SCENE_LOOP_PLAY:
+					
+
+				break;
+
+			case SCENE_FIN_PLAY:
+
+
+				break;
+			}
 				
 			
 			
