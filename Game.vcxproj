@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Collision\Collision.cpp" />
     <ClCompile Include="Src\Input\input.cpp" />
     <ClCompile Include="Src\Main.cpp" />
     <ClCompile Include="Src\Map\Map.cpp" />
@@ -19,6 +20,7 @@
     <ClCompile Include="Src\Scene\Title\title.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Collision\Collision.h" />
     <ClInclude Include="Src\Common.h" />
     <ClInclude Include="Src\Input\input.h" />
     <ClInclude Include="Src\Map\Map.h" />

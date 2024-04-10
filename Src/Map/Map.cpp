@@ -1,5 +1,7 @@
 #include "map.h"
 #include "DxLib.h"
+#include "../Player/player.h"
+#include "../Collision/Collision.h"
 //マップ処理
 
 // 初期化リストでconstのメンバ変数を初期化
@@ -80,10 +82,10 @@ void MAPCollision::MapCollision() {
 
 			// 矩形の当たり判定用のデータを準備
 			// プレイヤーの情報
-			int Ax = playerInfo.GetPosX();
-			int Ay = playerInfo.GetPosY();
-			int Aw = PLAYER_SIZE;
-			int Ah = PLAYER_SIZE;
+			int Ax = playerX;
+			int Ay = playerY;
+			int Aw = playerSizeX;
+			int Ah = playerSizeY;
 
 			// オブジェクトの情報
 			int Bx = mapIndexX * MAP_SIZE;
@@ -131,10 +133,10 @@ void MAPCollision::MapCollision() {
 
 			// 矩形の当たり判定用のデータを準備
 			// プレイヤーの情報
-			int Ax = playerInfo.GetPosX();
-			int Ay = playerInfo.GetPosY();
-			int Aw = PLAYER_SIZE;
-			int Ah = PLAYER_SIZE;
+			int Ax = playerX;
+			int Ay = playerY;
+			int Aw = playerSizeX;
+			int Ah = playerSizeY;
 
 			// オブジェクトの情報
 			int Bx = mapIndexX * MAP_SIZE;
