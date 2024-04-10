@@ -1,13 +1,16 @@
 #include "play.h"
 #include "../../Map/Map.h"  
+#include "../../Player/player.h"
 
 Map CMap;                     
-
+Player player;
 
 //‰Šú‰»
 void InitPlay() {
 	
 	CMap.Init();
+
+	player.Init();
 
 	scene = SCENE_LOOP_PLAY;
 }
@@ -18,7 +21,7 @@ void InitPlay() {
 void StepPlay() {
 
 
-	
+	player.Step();
 }
 
 
@@ -26,9 +29,10 @@ void StepPlay() {
 //•`‰æˆ—
 void DrawPlay() {
 
-	DrawCircle(100, 630, 32, GetColor(255, 0, 0), true);
+	
 
 	CMap.Draw();
+	player.Draw();
 	
 }
 

@@ -14,6 +14,7 @@
     <ClCompile Include="Src\Input\input.cpp" />
     <ClCompile Include="Src\Main.cpp" />
     <ClCompile Include="Src\Map\Map.cpp" />
+    <ClCompile Include="Src\Player\player.cpp" />
     <ClCompile Include="Src\Scene\Play\play.cpp" />
     <ClCompile Include="Src\Scene\Title\title.cpp" />
   </ItemGroup>
@@ -21,6 +22,7 @@
     <ClInclude Include="Src\Common.h" />
     <ClInclude Include="Src\Input\input.h" />
     <ClInclude Include="Src\Map\Map.h" />
+    <ClInclude Include="Src\Player\player.h" />
     <ClInclude Include="Src\Scene\Play\play.h" />
     <ClInclude Include="Src\Scene\Title\title.h" />
   </ItemGroup>

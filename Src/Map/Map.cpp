@@ -46,6 +46,11 @@ void Map::Init() {
 
 
 void Map::Draw() {
+
+	//‚²‚ß‚ñA‚¤‚¿‚ÌPC‚¾‚ÆŒ©‚¸‚ç‚¢‚Ì‚Åˆê“I‚É”’‚¢”wŒi‚¨‚­BŒã‚ÅÁ‚µ‚Ä‚¢‚¢‚æ
+	DrawBox(0, 0, 1280, 720, GetColor(200, 200, 200), true);
+	//-------
+
 	for (int y = 0; y < MAP_DATA_Y; y++)
 	{
 		for (int x = 0; x < MAP_DATA_X; x++)
