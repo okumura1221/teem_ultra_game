@@ -3,7 +3,7 @@
 
 //èâä˙âª
 void InitPlay() {
-
+	
 
 
 }
@@ -14,7 +14,7 @@ void InitPlay() {
 void StepPlay() {
 
 
-
+	
 }
 
 
@@ -24,7 +24,7 @@ void DrawPlay() {
 
 
 
-
+	
 }
 
 
