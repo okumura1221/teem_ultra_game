@@ -1,9 +1,4 @@
-//オリジナルゲーム開発
-//学籍番号：2309428
-//氏名：福島康生
-
 #include "DxLib.h"
-
 
 
 //設定フレームレート
@@ -31,8 +26,6 @@ void DrawCalc();
 
 
 
-
-
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow )
 {
 	//ウィンドウの状態を設定する
@@ -45,7 +38,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	}
 
 	//ウィンドウサイズを変更
-	SetGraphMode(1080, 720, 32);
+	SetGraphMode(1280, 720, 32);
 
 	//描画するスクリーンを設定
 	SetDrawScreen(DX_SCREEN_BACK);
