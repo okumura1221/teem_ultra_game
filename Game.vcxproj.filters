@@ -17,6 +17,12 @@
     <Filter Include="Input">
       <UniqueIdentifier>{b42229c4-3397-4088-b8d0-e08ef8455456}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{83582959-5032-4ab1-bc64-a7f8cb8d1252}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{f1b4b081-2489-46aa-87a1-121503be79cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Main.cpp" />
@@ -29,6 +35,12 @@
     <ClCompile Include="Src\Input\input.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Map\Map.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Player\player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common.h" />
@@ -40,6 +52,12 @@
     </ClInclude>
     <ClInclude Include="Src\Input\input.h">
       <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Map\Map.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Player\player.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
