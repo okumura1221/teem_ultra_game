@@ -65,7 +65,7 @@ void Map::Draw() {
 	}
 }
 
-/*// マップの当たり判定
+// マップの当たり判定
 void MAPCollision::MapCollision() {
 	// Y方向のみ当たり判定をチェックする
 	for (int mapIndexY = 0; mapIndexY < MAP_DATA_Y; mapIndexY++)
@@ -173,4 +173,4 @@ void MAPCollision::MapCollision() {
 int MAPCollision::GetOverlap(int posA, int posB) {
 	int ret = posA - posB;
 	return abs(ret);
-}*/
+}
