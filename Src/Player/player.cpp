@@ -11,12 +11,15 @@ void Player::Init() {
 	playerSizeY = 64;
 	playerSpeed = 5;
 	jump = false;
+	grav = 15.0;
+	jumpPower = 20;
+	
 
 }
 
 void Player::Step() {
 
-	
+	//座標を決定
 	playerX = playerNextX;
 	playerY = playerNextY;
 
@@ -31,22 +34,20 @@ void Player::Step() {
 
 	//ジャンプ処理
 	if (!jump) {
-		grav = 0;
+		jumpPower = 40;
 		if (Input::Push(KEY_INPUT_W)) {
 			jump = true;
 		}
 	}
 	if (jump) {
-		playerNextY -= 20;
-		grav += 0.9;
-		playerNextY += grav;
+		playerNextY -= jumpPower;
+		jumpPower -= 1.2;
+		if (jumpPower <= 0) {
+			jumpPower = 0;
+		}
 	}
-
-	//一時的な当たり判定
-	if (playerNextY >= 720 - 64) {
-		playerNextY = 720 - 64;
-		jump = false;
-	}
+	//重力
+	playerNextY += grav;
 
 }
 

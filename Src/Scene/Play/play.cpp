@@ -96,8 +96,7 @@ void MAPCollision::MapCollision() {
 					// ‚ß‚è‚İ—Ê‚ğŒvZ‚·‚é
 					int overlap = Ay + Ah - By;
 					player.SetPlayerNextPosY(Ay - overlap);
-					//playerInfo.Yspeed = 0.0f;    //–ß‚·
-					//player.Jump=false;    //‚Â‚¢‚½‚Æ‚«Ø‚è‘Ö‚¦
+					player.SetJump();
 				}
 			}
 		}
