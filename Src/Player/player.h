@@ -42,10 +42,10 @@ public:
 	float GetNextPlayerPosY() { return playerNextY; }
 
 	//プレイヤーのx座標をセット
-	float SetPlayerNextPosX(float new_pos_x) {  playerNextX= new_pos_x; }
+	void SetPlayerNextPosX(float new_pos_x) {  playerNextX= new_pos_x; }
 
 	//プレイヤーのｙ座標をセット
-	float SetPlayerNextPosY(float new_pos_y) {  playerNextY= new_pos_y; }
+	void SetPlayerNextPosY(float new_pos_y) {  playerNextY= new_pos_y; }
 
 	//プレイヤーのＸサイズ
 	int GetPlayerSizeX() { return playerSizeX; }
@@ -54,5 +54,6 @@ public:
 	int GetPlayerSizeY() { return playerSizeY; }
 
 	// 進んでいる方向をチェック
+
 	void GetMoveDirection(bool* _dirArray);
 };

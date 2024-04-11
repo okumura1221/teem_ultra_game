@@ -53,7 +53,7 @@ void FinPlay() {
 // マップの当たり判定
 void MAPCollision::MapCollision() {
 	// Y方向のみ当たり判定をチェックする
-	/*for (int mapIndexY = 0; mapIndexY < MAP_DATA_Y; mapIndexY++)
+	for (int mapIndexY = 0; mapIndexY < MAP_DATA_Y; mapIndexY++)
 	{
 		for (int mapIndexX = 0; mapIndexX < MAP_DATA_X; mapIndexX++)
 		{
@@ -96,12 +96,12 @@ void MAPCollision::MapCollision() {
 					// めり込み量を計算する
 					int overlap = Ay + Ah - By;
 					player.SetPlayerNextPosY(Ay - overlap);
-					playerInfo.Yspeed = 0.0f;    //戻す
+					//playerInfo.Yspeed = 0.0f;    //戻す
 					playerInfo.isFly = false;    //ついたとき切り替え
 				}
 			}
 		}
-	}*/
+	}
 	// X方向のみ当たり判定をチェックする
 	for (int mapIndexY = 0; mapIndexY < MAP_DATA_Y; mapIndexY++)
 	{
@@ -152,10 +152,4 @@ void MAPCollision::MapCollision() {
 			}
 		}
 	}
-}
-
-// 2つの座標がか重なっている量を取得
-int MAPCollision::GetOverlap(int posA, int posB) {
-	int ret = posA - posB;
-	return abs(ret);
 }
