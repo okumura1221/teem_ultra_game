@@ -47,7 +47,7 @@ void Map::Init() {
 
 void Map::Draw() {
 
-	
+	DrawCircle(600, 300, 1200, GetColor(255, 255, 255), true);
 
 	for (int y = 0; y < MAP_DATA_Y; y++)
 	{

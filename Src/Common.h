@@ -2,6 +2,7 @@
 
 #include "DxLib.h"
 #include "Input/input.h"
+#include "Collision/Collision.h"
 
 
 enum SCENE {

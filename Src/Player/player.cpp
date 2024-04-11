@@ -4,7 +4,12 @@
 
 void Player::Init() {
 
-	playerHandle = LoadGraph("Data/Player/player.png");
+	LoadDivGraph("Data/Player/playerRun_R.png", 6, 3, 2, 64, 64, playerHandle[0]);
+	LoadDivGraph("Data/Player/playerRun_L.png", 6, 3, 2, 64, 64, playerHandle[1]);
+	animState = 0;
+	animIndex = 0;
+	animFlameCount = 0;
+	changeAnimFlame = 7;
 	playerNextX = 40;
 	playerNextY =400;
 	playerSizeX = 64;
@@ -24,12 +29,16 @@ void Player::Step() {
 	playerY = playerNextY;
 
 	//ˆÚ“®ˆ—
-	if(Input::Keep(KEY_INPUT_A)) {
+	if(Input::Keep(KEY_INPUT_A)) {//¶
 		playerNextX -= playerSpeed;
+		animState = WALK_L;
+		animFlameCount++;
 	}
 
-	if (Input::Keep(KEY_INPUT_D)) {
+	if (Input::Keep(KEY_INPUT_D)) {//‰E
 		playerNextX += playerSpeed;
+		animState = WALK_R;
+		animFlameCount++;
 	}
 
 	//ƒWƒƒƒ“ƒvˆ—
@@ -53,7 +62,19 @@ void Player::Step() {
 
 void Player::Draw() {
 
-	DrawGraph(playerX, playerY, playerHandle, true);
+
+
+	if (animFlameCount >= changeAnimFlame) {
+		animFlameCount = 0;
+		animIndex++;
+		if (animIndex == 6) {
+			animIndex = 0;
+		}
+	}
+
+
+
+	DrawGraph(playerX, playerY, playerHandle[animState][animIndex], true);
 	
 	DrawFormatString(32, 0, GetColor(255, 0, 0), "%d", playerHandle, true);
 }

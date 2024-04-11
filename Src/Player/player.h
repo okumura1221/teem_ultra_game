@@ -1,11 +1,17 @@
 #include "../Common.h"
 
 
+enum Animation {
+	WALK_R,
+	WALK_L
+
+};
+
 
 class Player {
 
 protected:
-	int playerHandle;
+	int playerHandle[2][6];
 	float playerX;
 	float playerNextX;
 	float playerY;
@@ -16,6 +22,10 @@ protected:
 
 	int playerSizeX;
 	int playerSizeY;
+	int animState;
+	int animIndex;
+	int changeAnimFlame;
+	int animFlameCount;
 
 	bool jump;//ƒWƒƒƒ“ƒv‰Â”\‚©‚Ç‚¤‚©
 
