@@ -35,15 +35,24 @@ public:
 	//プレイヤーのｙ座標を得る
 	float GetPlayerPosY() { return playerY; }
 
+	//プレイヤーのｘ座標を得る
+	float GetNextPlayerPosX() { return playerNextX; }
+
+	//プレイヤーのｙ座標を得る
+	float GetNextPlayerPosY() { return playerNextY; }
+
 	//プレイヤーのx座標をセット
-	float GetPlayerNextPosX(float new_pos_x) {  playerNextX= new_pos_x; }
+	float SetPlayerNextPosX(float new_pos_x) {  playerNextX= new_pos_x; }
 
 	//プレイヤーのｙ座標をセット
-	float GetPlayerNextPosY(float new_pos_y) {  playerNextY= new_pos_y; }
+	float SetPlayerNextPosY(float new_pos_y) {  playerNextY= new_pos_y; }
 
 	//プレイヤーのＸサイズ
 	int GetPlayerSizeX() { return playerSizeX; }
 
 	//プレイヤーのＹサイズ
 	int GetPlayerSizeY() { return playerSizeY; }
+
+	// 進んでいる方向をチェック
+	void GetMoveDirection(bool* _dirArray);
 };

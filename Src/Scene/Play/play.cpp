@@ -5,6 +5,7 @@
 
 Map CMap;                     
 Player player;
+MAPCollision mapcollision;
 
 //初期化
 void InitPlay() {
@@ -20,7 +21,7 @@ void InitPlay() {
 
 //通常処理
 void StepPlay() {
-
+	mapcollision.MapCollision();
 
 	player.Step();
 }
@@ -47,10 +48,12 @@ void FinPlay() {
 
 }
 
-/*// マップの当たり判定
+
+
+// マップの当たり判定
 void MAPCollision::MapCollision() {
 	// Y方向のみ当たり判定をチェックする
-	for (int mapIndexY = 0; mapIndexY < MAP_DATA_Y; mapIndexY++)
+	/*for (int mapIndexY = 0; mapIndexY < MAP_DATA_Y; mapIndexY++)
 	{
 		for (int mapIndexX = 0; mapIndexX < MAP_DATA_X; mapIndexX++)
 		{
@@ -60,14 +63,14 @@ void MAPCollision::MapCollision() {
 
 			// どの方向に進んでいたかチェック
 			bool dirArray[4] = { false,false,false,false };
-			playerInfo.GetMoveDirection(dirArray);
+			player.GetMoveDirection(dirArray);
 
 			// 矩形の当たり判定用のデータを準備
 			// プレイヤーの情報
-			int Ax = playerX;
-			int Ay = playerY;
-			int Aw = playerSizeX;
-			int Ah = playerSizeY;
+			int Ax = player.GetPlayerPosX();
+			int Ay = player.GetPlayerPosY();
+			int Aw = player.GetPlayerSizeX();
+			int Ah = player.GetPlayerSizeY();
 
 			// オブジェクトの情報
 			int Bx = mapIndexX * MAP_SIZE;
@@ -76,8 +79,8 @@ void MAPCollision::MapCollision() {
 			int Bh = MAP_SIZE;
 
 			// ※Y方向のみに移動したと仮定した座標で当たり判定をチェックします
-			Ay = playerInfo.GetNextPosY();
-			Ax = playerInfo.GetPosX();
+			Ay = player.GetNextPlayerPosY();
+			Ax = player.GetPlayerPosX();
 
 			// 当たっているかチェック
 			if (IsHitRect(Ax, Ay, Aw, Ah, Bx, By, Bw, Bh)) {
@@ -85,20 +88,20 @@ void MAPCollision::MapCollision() {
 				if (dirArray[0]) {
 					// めり込み量を計算する
 					int overlap = By + Bh - Ay;
-					playerInfo.SetNextPosY(Ay + overlap);
+					player.SetPlayerNextPosY(Ay + overlap);
 				}
 
 				// 下方向の修正
 				if (dirArray[1]) {
 					// めり込み量を計算する
 					int overlap = Ay + Ah - By;
-					playerInfo.SetNextPosY(Ay - overlap);
+					player.SetPlayerNextPosY(Ay - overlap);
 					playerInfo.Yspeed = 0.0f;    //戻す
 					playerInfo.isFly = false;    //ついたとき切り替え
 				}
 			}
 		}
-	}
+	}*/
 	// X方向のみ当たり判定をチェックする
 	for (int mapIndexY = 0; mapIndexY < MAP_DATA_Y; mapIndexY++)
 	{
@@ -111,14 +114,14 @@ void MAPCollision::MapCollision() {
 			// どの方向に進んでいたかチェック
 			// ※Playerクラスに進む方向をチェックする関数を準備しています。
 			bool dirArray[4] = { false,false,false,false };
-			playerInfo.GetMoveDirection(dirArray);
+			player.GetMoveDirection(dirArray);
 
 			// 矩形の当たり判定用のデータを準備
 			// プレイヤーの情報
-			int Ax = playerX;
-			int Ay = playerY;
-			int Aw = playerSizeX;
-			int Ah = playerSizeY;
+			int Ax = player.GetPlayerPosX();
+			int Ay = player.GetPlayerPosY();
+			int Aw = player.GetPlayerSizeX();
+			int Ah = player.GetPlayerSizeY();
 
 			// オブジェクトの情報
 			int Bx = mapIndexX * MAP_SIZE;
@@ -128,8 +131,8 @@ void MAPCollision::MapCollision() {
 
 			// 矩形の当たり判定用のデータを準備
 			// ※X方向のみに移動したと仮定した座標で当たり判定をチェックします
-			Ay = playerInfo.GetNextPosY();
-			Ax = playerInfo.GetNextPosX();
+			Ay = player.GetNextPlayerPosY();
+			Ax = player.GetNextPlayerPosX();
 
 			// 当たっているかチェック
 			if (IsHitRect(Ax, Ay, Aw, Ah, Bx, By, Bw, Bh)) {
@@ -137,14 +140,14 @@ void MAPCollision::MapCollision() {
 				if (dirArray[2]) {
 					// めり込み量を計算する
 					int overlap = Bx + Bw - Ax;
-					playerInfo.SetNextPosX(Ax + overlap);
+					player.SetPlayerNextPosX(Ax + overlap);
 				}
 
 				// 右方向の修正
 				if (dirArray[3]) {
 					// めり込み量を計算する
 					int overlap = Ax + Aw - Bx;
-					playerInfo.SetNextPosX(Ax - overlap);
+					player.SetPlayerNextPosX(Ax - overlap);
 				}
 			}
 		}
@@ -155,4 +158,4 @@ void MAPCollision::MapCollision() {
 int MAPCollision::GetOverlap(int posA, int posB) {
 	int ret = posA - posB;
 	return abs(ret);
-}*/
+}

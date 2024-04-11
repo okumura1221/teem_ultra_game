@@ -56,3 +56,27 @@ void Player::Draw() {
 	
 	DrawFormatString(32, 0, GetColor(255, 0, 0), "%d", playerHandle, true);
 }
+
+
+// 進んでいる方向をチェック
+// 上下左右の順になっている
+void Player::GetMoveDirection(bool* _dirArray) {
+	// 右方向のチェック
+	if (GetNextPlayerPosX() > GetPlayerPosX()) {
+		_dirArray[3] = true;
+	}
+
+	// 左方向のチェック
+	if (GetNextPlayerPosX() <GetPlayerPosX()) {
+		_dirArray[2] = true;
+	}
+	/*// 下方向のチェック
+	if (player.GetNextPlayerPosY() > playerInfo.y) {
+		_dirArray[1] = true;
+	}
+
+	// 上方向のチェック
+	if (player.GetNextPlayerPosY() < playerInfo.y) {
+		_dirArray[0] = true;
+	}*/
+}
