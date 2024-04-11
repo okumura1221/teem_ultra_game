@@ -5,8 +5,8 @@
 void Player::Init() {
 
 	playerHandle = LoadGraph("Data/Player/player.png");
-	playerX = 40;
-	playerY =400;
+	playerNextX = 40;
+	playerNextY =400;
 	playerSizeX = 64;
 	playerSizeY = 64;
 	playerSpeed = 5;
@@ -17,13 +17,16 @@ void Player::Init() {
 void Player::Step() {
 
 	
+	playerX = playerNextX;
+	playerY = playerNextY;
+
 	//ˆÚ“®ˆ—
 	if(Input::Keep(KEY_INPUT_A)) {
-		playerX -= playerSpeed;
+		playerNextX -= playerSpeed;
 	}
 
 	if (Input::Keep(KEY_INPUT_D)) {
-		playerX += playerSpeed;
+		playerNextX += playerSpeed;
 	}
 
 	//ƒWƒƒƒ“ƒvˆ—
@@ -34,16 +37,17 @@ void Player::Step() {
 		}
 	}
 	if (jump) {
-		playerY -= 20;
+		playerNextY -= 20;
 		grav += 0.9;
-		playerY += grav;
+		playerNextY += grav;
 	}
 
 	//ˆêŽž“I‚È“–‚½‚è”»’è
-	if (playerY >= 720 - 64) {
-		playerY = 720 - 64;
+	if (playerNextY >= 720 - 64) {
+		playerNextY = 720 - 64;
 		jump = false;
 	}
+
 }
 
 void Player::Draw() {
