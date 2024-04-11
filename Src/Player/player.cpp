@@ -70,13 +70,13 @@ void Player::GetMoveDirection(bool* _dirArray) {
 	if (GetNextPlayerPosX() <GetPlayerPosX()) {
 		_dirArray[2] = true;
 	}
-	/*// 下方向のチェック
-	if (player.GetNextPlayerPosY() > playerInfo.y) {
+	// 下方向のチェック
+	if (GetNextPlayerPosY() > GetPlayerPosY()) {
 		_dirArray[1] = true;
 	}
 
 	// 上方向のチェック
-	if (player.GetNextPlayerPosY() < playerInfo.y) {
+	if (GetNextPlayerPosY() < GetPlayerPosY()) {
 		_dirArray[0] = true;
-	}*/
+	}
 }

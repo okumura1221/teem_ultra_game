@@ -54,6 +54,5 @@ public:
 	int GetPlayerSizeY() { return playerSizeY; }
 
 	// 進んでいる方向をチェック
-
 	void GetMoveDirection(bool* _dirArray);
 };
