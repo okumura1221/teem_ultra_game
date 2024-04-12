@@ -2,16 +2,15 @@
 
 
 enum Animation {
-	WALK_R,
-	WALK_L
-
+	R,
+	L
 };
 
 
 class Player {
 
 protected:
-	int playerHandle[2][6];
+	int playerHandle[2][14];
 	float playerX;
 	float playerNextX;
 	float playerY;
@@ -23,6 +22,7 @@ protected:
 	int playerSizeX;
 	int playerSizeY;
 	int animState;
+	int animFlag;
 	int animIndex;
 	int changeAnimFlame;
 	int animFlameCount;
