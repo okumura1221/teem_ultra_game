@@ -15,7 +15,8 @@ protected:
 	int button[4];//入力キー
 	int playerSizeX;//プレイヤー画像のXサイズ
 	int playerSizeY;//プレイヤー画像のYサイズ
-	int HP;//プレイヤーのHP
+	int hpHandle;
+	int hp;//プレイヤーのHP
 
 	float playerX;//ｘ座標
 	float playerNextX;//次のフレームのｘ座標
@@ -38,6 +39,8 @@ protected:
 	int bulletState[10];//弾の向き
 	int bulletinterval;//弾の発射間隔
 	int bulletintervalCount;//弾の発射カウント
+	int bulletSizeX;
+	int bulletSizeY;
 	
 	float bulletX[10];//弾のX座標
 	float bulletY[10];//弾のY座標

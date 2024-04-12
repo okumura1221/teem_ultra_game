@@ -15,6 +15,7 @@ void Player::Init(int player_no) {
 	//‚PP‚Æ‚QP‚Ì•ª‚¯
 	if (player_no == 1) {
 		animState = R;
+		hpHandle = LoadGraph("Data/Player/hp.png");
 		for (int index = 0;index < 10;index++) {
 			bulletHandle[0][index] = LoadGraph("Data/Player/attack_R.png");
 			bulletHandle[1][index] = LoadGraph("Data/Player/attack_L.png");
@@ -28,6 +29,7 @@ void Player::Init(int player_no) {
 	}
 	else {
 		animState = L;
+		hpHandle = LoadGraph("Data/Player/hp2.png");
 		for (int index = 0;index < 10;index++) {
 			bulletHandle[0][index] = LoadGraph("Data/Player/attack2_R.png");
 			bulletHandle[1][index] = LoadGraph("Data/Player/attack2_L.png");
@@ -40,6 +42,7 @@ void Player::Init(int player_no) {
 		playerNextY = 400;
 	}
 
+	hp = 100;
 	playerSizeX = 64;
 	playerSizeY = 64;
 	playerSpeed = 5;
@@ -55,6 +58,8 @@ void Player::Init(int player_no) {
 	}
 	bulletinterval = 20;
 	bulletintervalCount = 20;
+	bulletSizeX = 80;
+	bulletSizeY = 40;
 }
 
 void Player::Step() {
@@ -147,7 +152,7 @@ void Player::Step() {
 		if (bulletState[index] == R) {
 			bulletX[index] += 10;
 		}
-		if (bulletX[index] >= 1280 || bulletX[index] <= 0) {
+		if (bulletX[index] >= 1200 || bulletX[index] <= 0) {
 			isUse[index] = false;
 		}
 	}
@@ -162,6 +167,7 @@ void Player::Step() {
 
 void Player::Draw() {
 
+	//ƒAƒjƒ[ƒVƒ‡ƒ“
 	if (animFlag == 0) {
 		animIndex = 9;
 	}
@@ -194,15 +200,18 @@ void Player::Draw() {
 		}
 	}
 
+	//ƒvƒŒƒCƒ„[•`‰æ
 	DrawGraph(playerX, playerY, playerHandle[animState][animIndex], true);
 
+	//’e‰æ‘œ
 	for (int index = 0;index < 10;index++) {
 		if (!isUse[index]) { continue; }
 	
 		DrawGraph(bulletX[index], bulletY[index], bulletHandle[bulletState[index]][index], true);
-	
 	}
 	
+	DrawCircleGauge(playerX + 32, playerY - 20, hp,hpHandle, 0.0);
+
 }
 
 
