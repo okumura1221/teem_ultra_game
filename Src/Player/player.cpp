@@ -4,10 +4,11 @@
 
 void Player::Init() {
 
-	LoadDivGraph("Data/Player/playerRun_R.png", 6, 3, 2, 64, 64, playerHandle[0]);
-	LoadDivGraph("Data/Player/playerRun_L.png", 6, 3, 2, 64, 64, playerHandle[1]);
+	LoadDivGraph("Data/Player/player_R.png", 14, 3, 5, 64, 64, playerHandle[0]);
+	LoadDivGraph("Data/Player/player_L.png", 14, 3, 5, 64, 64, playerHandle[1]);
 	animState = 0;
 	animIndex = 0;
+	animFlag = 0;
 	animFlameCount = 0;
 	changeAnimFlame = 7;
 	playerNextX = 40;
@@ -24,6 +25,19 @@ void Player::Init() {
 
 void Player::Step() {
 
+	if (playerX == playerNextX) {
+		animFlag = 0;
+	}
+	if (playerY < playerNextY) {
+		animFlag = 2;
+	}
+	if (playerY > playerNextY) {
+		animFlag = 3;
+	}
+	if (playerY == playerNextY) {
+		animFlag = 0;
+	}
+		
 	//座標を決定
 	playerX = playerNextX;
 	playerY = playerNextY;
@@ -31,14 +45,17 @@ void Player::Step() {
 	//移動処理
 	if(Input::Keep(KEY_INPUT_A)) {//左
 		playerNextX -= playerSpeed;
-		animState = WALK_L;
-		animFlameCount++;
-	}
-
-	if (Input::Keep(KEY_INPUT_D)) {//右
+		animState = L;
+		if (animFlag != 2&&animFlag != 3) {
+			animFlag = 1;
+		}
+	}else 
+		if (Input::Keep(KEY_INPUT_D)) {//右
 		playerNextX += playerSpeed;
-		animState = WALK_R;
-		animFlameCount++;
+		animState = R;
+		if (animFlag != 2 &&animFlag != 3) {
+			animFlag = 1;
+		}
 	}
 
 	//ジャンプ処理
@@ -62,16 +79,28 @@ void Player::Step() {
 
 void Player::Draw() {
 
+	if (animFlag == 0) {
+		animIndex = 9;
+	}
 
-
-	if (animFlameCount >= changeAnimFlame) {
-		animFlameCount = 0;
-		animIndex++;
-		if (animIndex == 6) {
-			animIndex = 0;
+	if (animFlag == 1) {
+		animFlameCount++;
+		if (animFlameCount >= changeAnimFlame) {
+			animFlameCount = 0;
+			animIndex++;
+			if (animIndex >= 6) {
+				animIndex = 0;
+			}
 		}
 	}
 
+	if (animFlag == 2) {
+		animIndex = 7;
+	}
+
+	if (animFlag == 3) {
+		animIndex = 6;
+	}
 
 
 	DrawGraph(playerX, playerY, playerHandle[animState][animIndex], true);
