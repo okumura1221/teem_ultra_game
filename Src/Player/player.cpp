@@ -25,7 +25,7 @@ void Player::Init() {
 
 void Player::Step() {
 
-	if (playerX == playerNextX) {
+	if (playerX == playerNextX&&!jump) {
 		animFlag = 0;
 	}
 	if (playerY < playerNextY) {
@@ -34,7 +34,7 @@ void Player::Step() {
 	if (playerY > playerNextY) {
 		animFlag = 3;
 	}
-	if (playerY == playerNextY) {
+	if (playerY == playerNextY && !jump) {
 		animFlag = 0;
 	}
 		
