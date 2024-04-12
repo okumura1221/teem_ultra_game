@@ -1,21 +1,33 @@
 #include "../Common.h"
 
 
+enum Animation {
+	WALK_R,
+	WALK_L
+
+};
+
+
 class Player {
 
 protected:
-	int playerHandle;
+	int playerHandle[2][6];
 	float playerX;
 	float playerNextX;
 	float playerY;
 	float playerNextY;
-	float playerSpeed;
-	float grav;
+	float playerSpeed;//プレイヤー移動速度
+	float grav;//重力のおおきさ
+	float jumpPower;//ジャンプ力
 
 	int playerSizeX;
 	int playerSizeY;
+	int animState;
+	int animIndex;
+	int changeAnimFlame;
+	int animFlameCount;
 
-	bool jump;
+	bool jump;//ジャンプ可能かどうか
 
 public:
 
@@ -52,6 +64,9 @@ public:
 
 	//プレイヤーのＹサイズ
 	int GetPlayerSizeY() { return playerSizeY; }
+
+	//プレイヤーがジャンプ可能にする
+	void SetJump() { jump = false; }
 
 	// 進んでいる方向をチェック
 	void GetMoveDirection(bool* _dirArray);

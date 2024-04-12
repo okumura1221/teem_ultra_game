@@ -4,55 +4,77 @@
 
 void Player::Init() {
 
-	playerHandle = LoadGraph("Data/Player/player.png");
+	LoadDivGraph("Data/Player/playerRun_R.png", 6, 3, 2, 64, 64, playerHandle[0]);
+	LoadDivGraph("Data/Player/playerRun_L.png", 6, 3, 2, 64, 64, playerHandle[1]);
+	animState = 0;
+	animIndex = 0;
+	animFlameCount = 0;
+	changeAnimFlame = 7;
 	playerNextX = 40;
 	playerNextY =400;
 	playerSizeX = 64;
 	playerSizeY = 64;
 	playerSpeed = 5;
 	jump = false;
+	grav = 15.0;
+	jumpPower = 20;
+	
 
 }
 
 void Player::Step() {
 
-	
+	//座標を決定
 	playerX = playerNextX;
 	playerY = playerNextY;
 
 	//移動処理
-	if(Input::Keep(KEY_INPUT_A)) {
+	if(Input::Keep(KEY_INPUT_A)) {//左
 		playerNextX -= playerSpeed;
+		animState = WALK_L;
+		animFlameCount++;
 	}
 
-	if (Input::Keep(KEY_INPUT_D)) {
+	if (Input::Keep(KEY_INPUT_D)) {//右
 		playerNextX += playerSpeed;
+		animState = WALK_R;
+		animFlameCount++;
 	}
 
 	//ジャンプ処理
 	if (!jump) {
-		grav = 0;
+		jumpPower = 40;
 		if (Input::Push(KEY_INPUT_W)) {
 			jump = true;
 		}
 	}
 	if (jump) {
-		playerNextY -= 20;
-		grav += 0.9;
-		playerNextY += grav;
+		playerNextY -= jumpPower;
+		jumpPower -= 1.2;
+		if (jumpPower <= 0) {
+			jumpPower = 0;
+		}
 	}
-
-	//一時的な当たり判定
-	if (playerNextY >= 720 - 64) {
-		playerNextY = 720 - 64;
-		jump = false;
-	}
+	//重力
+	playerNextY += grav;
 
 }
 
 void Player::Draw() {
 
-	DrawGraph(playerX, playerY, playerHandle, true);
+
+
+	if (animFlameCount >= changeAnimFlame) {
+		animFlameCount = 0;
+		animIndex++;
+		if (animIndex == 6) {
+			animIndex = 0;
+		}
+	}
+
+
+
+	DrawGraph(playerX, playerY, playerHandle[animState][animIndex], true);
 	
 	DrawFormatString(32, 0, GetColor(255, 0, 0), "%d", playerHandle, true);
 }

@@ -23,6 +23,9 @@
     <Filter Include="Player">
       <UniqueIdentifier>{f1b4b081-2489-46aa-87a1-121503be79cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{2194490b-d5c0-4913-8453-5f28436a9b95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Main.cpp" />
@@ -41,6 +44,9 @@
     <ClCompile Include="Src\Player\player.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Collision\Collision.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common.h" />
@@ -58,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="Src\Player\player.h">
       <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Collision\Collision.h">
+      <Filter>Collision</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
