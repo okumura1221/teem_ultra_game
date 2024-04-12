@@ -11,6 +11,7 @@ class Player {
 
 protected:
 	int playerHandle[2][14];
+	int button[4];
 	float playerX;
 	float playerNextX;
 	float playerY;
@@ -32,7 +33,7 @@ protected:
 public:
 
 	//‰Šú‰»
-	void Init();
+	void Init(int player_no);
 
 	//’Êíˆ—
 	void Step();

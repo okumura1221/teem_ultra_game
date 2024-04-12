@@ -2,17 +2,34 @@
 
 
 
-void Player::Init() {
+void Player::Init(int player_no) {
 
 	LoadDivGraph("Data/Player/player_R.png", 14, 3, 5, 64, 64, playerHandle[0]);
 	LoadDivGraph("Data/Player/player_L.png", 14, 3, 5, 64, 64, playerHandle[1]);
-	animState = 0;
+	
 	animIndex = 0;
 	animFlag = 0;
 	animFlameCount = 0;
 	changeAnimFlame = 7;
-	playerNextX = 40;
-	playerNextY =400;
+	//１Pと２Pの分け
+	if (player_no == 1) {
+		animState = R;
+		button[0]= KEY_INPUT_A;
+		button[1]=KEY_INPUT_D;
+		button[2]= KEY_INPUT_W;
+		button[3]= KEY_INPUT_SPACE;
+		playerNextX = 40;
+		playerNextY = 400;
+	}
+	else {
+		animState = L;
+		button[0] = KEY_INPUT_NUMPAD4;
+		button[1] = KEY_INPUT_NUMPAD6;
+		button[2] = KEY_INPUT_NUMPAD8;
+		button[3] = KEY_INPUT_NUMPADENTER;
+		playerNextX =600;
+		playerNextY = 300;
+	}
 	playerSizeX = 64;
 	playerSizeY = 64;
 	playerSpeed = 5;
@@ -43,17 +60,17 @@ void Player::Step() {
 	playerY = playerNextY;
 
 	//移動処理
-	if(Input::Keep(KEY_INPUT_A)) {//左
+	if(Input::Keep(button[0])) {//左
 		playerNextX -= playerSpeed;
 		animState = L;
 		if (animFlag != 2&&animFlag != 3) {
 			animFlag = 1;
 		}
 	}else 
-		if (Input::Keep(KEY_INPUT_D)) {//右
+		if (Input::Keep(button[1])) {//右
 		playerNextX += playerSpeed;
 		animState = R;
-		if (animFlag != 2 &&animFlag != 3) {
+		if (animFlag != 2 && animFlag != 3) {
 			animFlag = 1;
 		}
 	}
@@ -61,7 +78,7 @@ void Player::Step() {
 	//ジャンプ処理
 	if (!jump) {
 		jumpPower = 40;
-		if (Input::Push(KEY_INPUT_W)) {
+		if (Input::Push(button[2])) {
 			jump = true;
 		}
 	}
@@ -105,7 +122,6 @@ void Player::Draw() {
 
 	DrawGraph(playerX, playerY, playerHandle[animState][animIndex], true);
 	
-	DrawFormatString(32, 0, GetColor(255, 0, 0), "%d", playerHandle, true);
 }
 
 
