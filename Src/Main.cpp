@@ -29,7 +29,7 @@ void DrawCalc();
 
 
 //ç≈èâÇÃÉVÅ[Éì
-SCENE scene=SCENE_INIT_PLAY;
+SCENE scene=SCENE_INIT_TITLE;
 
 
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow )
