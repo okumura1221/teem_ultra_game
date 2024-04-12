@@ -1,7 +1,7 @@
 #include "player.h"
 
 
-
+//èâä˙âª
 void Player::Init(int player_no) {
 
 	LoadDivGraph("Data/Player/player_R.png", 14, 3, 5, 64, 64, playerHandle[0]);
@@ -25,7 +25,7 @@ void Player::Init(int player_no) {
 		button[2]= KEY_INPUT_W;
 		button[3]= KEY_INPUT_SPACE;
 		playerNextX = 50;
-		playerNextY = 400;
+		playerNextY = 600;
 	}
 	else {
 		animState = L;
@@ -39,7 +39,7 @@ void Player::Init(int player_no) {
 		button[2] = KEY_INPUT_NUMPAD8;
 		button[3] = KEY_INPUT_NUMPADENTER;
 		playerNextX =1150;
-		playerNextY = 400;
+		playerNextY = 600;
 	}
 
 	hp = 100;
