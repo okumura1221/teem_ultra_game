@@ -3,13 +3,16 @@
 #include "../../Player/player.h"
 #include "../../Collision/Collision.h"
 
-Map CMap;                     
-Player player[2];
+                    
+Player* player;
+Map CMap;
 MAPCollision mapcollision;
 
 //初期化
 void InitPlay() {
 	
+
+	player = new Player[2];
 	CMap.Init();
 
 	player[0].Init(1);
@@ -26,6 +29,31 @@ void StepPlay() {
 
 	player[0].Step();
 	player[1].Step();
+
+	//プレイヤー１の弾とプレイヤー２の当たり判定
+	for (int index = 0;index < 10;index++) {
+
+		if (!player[0].GetBulletIsUse(index)) { continue; }
+		if(IsHitRect(player[1].GetPlayerPosX(), player[1].GetPlayerPosY(), player[1].GetPlayerSizeX(), player[1].GetPlayerSizeY(),
+			player[0].GetBulletPosX(index), player[0].GetBulletPosY(index), player[0].GetBulletSizeX(), player[0].GetBulletSizeY())){ 
+			player[1].InDamage(player[0].GetBulletDamage(index));
+			player[0].SetBulletIsUse(index);
+		
+		}
+	}
+
+	//プレイヤー2の弾とプレイヤー1の当たり判定
+	for (int index = 0;index < 10;index++) {
+
+		if (!player[1].GetBulletIsUse(index)) { continue; }
+		if (IsHitRect(player[0].GetPlayerPosX(), player[0].GetPlayerPosY(), player[0].GetPlayerSizeX(), player[0].GetPlayerSizeY(),
+			player[1].GetBulletPosX(index), player[1].GetBulletPosY(index), player[1].GetBulletSizeX(), player[1].GetBulletSizeY())) {
+			player[0].InDamage(player[1].GetBulletDamage(index));
+			player[1].SetBulletIsUse(index);
+
+		}
+	}
+
 
 	mapcollision.MapCollision();
 }
@@ -52,6 +80,7 @@ void FinPlay() {
 
 
 }
+
 
 
 
@@ -104,7 +133,7 @@ void MAPCollision::MapCollision() {
 						// めり込み量を計算する
 						int overlap = Ay + Ah - By;
 						player[index].SetPlayerNextPosY(Ay - overlap);
-						//playerInfo.Yspeed = 0.0f;    //戻す
+						
 						player[index].SetJump();    //ついたとき切り替え
 					}
 				}

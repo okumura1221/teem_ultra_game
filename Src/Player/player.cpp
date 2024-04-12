@@ -54,6 +54,7 @@ void Player::Init(int player_no) {
 	for (int index = 0;index < 10;index++) {
 		bulletX[index] = 0;
 		bulletY[index] = 0;
+		damage[index] = 8;//ダメージは地８、空５（変更の可能性あり）
 		isUse[index] = false;
 	}
 	bulletinterval = 20;
@@ -136,6 +137,12 @@ void Player::Step() {
 				bulletY[index] = playerY;
 				bulletState[index] = animState;
 				isUse[index] = true;
+				if (!jump) {
+					damage[index] = 8;
+				}
+				else {
+					damage[index] = 5;
+				}
 				break;
 			}
 

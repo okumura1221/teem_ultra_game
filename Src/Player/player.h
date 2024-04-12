@@ -41,7 +41,8 @@ protected:
 	int bulletintervalCount;//弾の発射カウント
 	int bulletSizeX;
 	int bulletSizeY;
-	
+	int damage[10];//弾の攻撃力
+
 	float bulletX[10];//弾のX座標
 	float bulletY[10];//弾のY座標
 
@@ -58,6 +59,7 @@ public:
 	//描画処理
 	void Draw();
 
+	//プレイヤー
 
 	//プレイヤーのｘ座標を得る
 	float GetPlayerPosX() { return playerX; }
@@ -86,6 +88,33 @@ public:
 	//プレイヤーがジャンプ可能にする
 	void SetJump() { jump = false; }
 
+	//プレイヤーがダメージを受ける
+	void InDamage(int damage) { hp -= damage; }
+
 	//プレイヤーの進んでいる方向をチェック
 	void GetMoveDirection(bool* _dirArray);
+
+	//弾
+
+	//弾のx座標を得る
+	float GetBulletPosX(int bullet_index) { return bulletX[bullet_index]; }
+
+	//弾のy座標を得る
+	float GetBulletPosY(int bullet_index) { return bulletY[bullet_index]+10; }
+
+	//弾のxサイズを得る
+	float GetBulletSizeX() { return bulletSizeX-40; }
+
+	//弾のyサイズを得る
+	float GetBulletSizeY() { return bulletSizeY-10; }
+
+	//弾の攻撃力を得る
+	int GetBulletDamage(int bullet_index) { return damage[bullet_index]; }
+
+	//弾の使用状態を得る
+	bool GetBulletIsUse(int bullet_index) { return isUse[bullet_index]; }
+
+	//弾の使用状態をオフにする
+	void SetBulletIsUse(int bullet_index) { isUse[bullet_index] = false;; }
+
 };
