@@ -10,15 +10,17 @@ void Player::Init(int player_no) {
 	animIndex = 0;
 	animFlag = 0;
 	animFlameCount = 0;
-	changeAnimFlame = 7;
+	
+
 	//‚PP‚Æ‚QP‚Ì•ª‚¯
 	if (player_no == 1) {
 		animState = R;
+		
 		button[0]= KEY_INPUT_A;
 		button[1]=KEY_INPUT_D;
 		button[2]= KEY_INPUT_W;
 		button[3]= KEY_INPUT_SPACE;
-		playerNextX = 40;
+		playerNextX = 50;
 		playerNextY = 400;
 	}
 	else {
@@ -27,8 +29,8 @@ void Player::Init(int player_no) {
 		button[1] = KEY_INPUT_NUMPAD6;
 		button[2] = KEY_INPUT_NUMPAD8;
 		button[3] = KEY_INPUT_NUMPADENTER;
-		playerNextX =600;
-		playerNextY = 300;
+		playerNextX =1150;
+		playerNextY = 400;
 	}
 	playerSizeX = 64;
 	playerSizeY = 64;
@@ -101,6 +103,7 @@ void Player::Draw() {
 	}
 
 	if (animFlag == 1) {
+		changeAnimFlame = 7;
 		animFlameCount++;
 		if (animFlameCount >= changeAnimFlame) {
 			animFlameCount = 0;
