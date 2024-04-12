@@ -35,13 +35,14 @@ protected:
 
 	//’e•Ï”
 	int bulletHandle[2][10];//’e‚Ì‰æ‘œ
+	int bulletState[10];//’e‚ÌŒü‚«
 	int bulletinterval;//’e‚Ì”­ËŠÔŠu
 	int bulletintervalCount;//’e‚Ì”­ËƒJƒEƒ“ƒg
 	
 	float bulletX[10];//’e‚ÌXÀ•W
 	float bulletY[10];//’e‚ÌYÀ•W
 
-	bool IsUse[10];//’eg—p’†‚©‚Ç‚¤‚©
+	bool isUse[10];//’eg—p’†‚©‚Ç‚¤‚©
 
 public:
 

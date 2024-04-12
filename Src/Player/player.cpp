@@ -15,7 +15,10 @@ void Player::Init(int player_no) {
 	//‚PP‚Æ‚QP‚Ì•ª‚¯
 	if (player_no == 1) {
 		animState = R;
-		
+		for (int index = 0;index < 10;index++) {
+			bulletHandle[0][index] = LoadGraph("Data/Player/attack_R.png");
+			bulletHandle[1][index] = LoadGraph("Data/Player/attack_L.png");
+		}
 		button[0]= KEY_INPUT_A;
 		button[1]=KEY_INPUT_D;
 		button[2]= KEY_INPUT_W;
@@ -25,6 +28,10 @@ void Player::Init(int player_no) {
 	}
 	else {
 		animState = L;
+		for (int index = 0;index < 10;index++) {
+			bulletHandle[0][index] = LoadGraph("Data/Player/attack2_R.png");
+			bulletHandle[1][index] = LoadGraph("Data/Player/attack2_L.png");
+		}
 		button[0] = KEY_INPUT_NUMPAD4;
 		button[1] = KEY_INPUT_NUMPAD6;
 		button[2] = KEY_INPUT_NUMPAD8;
@@ -32,6 +39,7 @@ void Player::Init(int player_no) {
 		playerNextX =1150;
 		playerNextY = 400;
 	}
+
 	playerSizeX = 64;
 	playerSizeY = 64;
 	playerSpeed = 5;
@@ -40,6 +48,13 @@ void Player::Init(int player_no) {
 	jumpPower = 20;
 	
 
+	for (int index = 0;index < 10;index++) {
+		bulletX[index] = 0;
+		bulletY[index] = 0;
+		isUse[index] = false;
+	}
+	bulletinterval = 20;
+	bulletintervalCount = 20;
 }
 
 void Player::Step() {
@@ -56,26 +71,35 @@ void Player::Step() {
 	if (playerY == playerNextY && !jump) {
 		animFlag = 0;
 	}
+	if (bulletintervalCount < 10) {
+		animFlag = 4;
+		if (!jump) {
+			playerNextX = playerX;
+		}
+	}
+
 		
 	//À•W‚ðŒˆ’è
 	playerX = playerNextX;
 	playerY = playerNextY;
 
 	//ˆÚ“®ˆ—
-	if(Input::Keep(button[0])) {//¶
-		playerNextX -= playerSpeed;
-		animState = L;
-		if (animFlag != 2&&animFlag != 3) {
-			animFlag = 1;
+		if (Input::Keep(button[0])) {//¶
+			playerNextX -= playerSpeed;
+			animState = L;
+			if (animFlag == 1 || animFlag == 0) {
+				animFlag = 1;
+			}
 		}
-	}else 
-		if (Input::Keep(button[1])) {//‰E
-		playerNextX += playerSpeed;
-		animState = R;
-		if (animFlag != 2 && animFlag != 3) {
-			animFlag = 1;
-		}
-	}
+		else
+			if (Input::Keep(button[1])) {//‰E
+				playerNextX += playerSpeed;
+				animState = R;
+				if (animFlag == 1 || animFlag == 0) {
+					animFlag = 1;
+				}
+			}
+
 
 	//ƒWƒƒƒ“ƒvˆ—
 	if (!jump) {
@@ -93,6 +117,46 @@ void Player::Step() {
 	}
 	//d—Í
 	playerNextY += grav;
+
+
+	//’e‚Ì”­ŽË
+	if (Input::Push(button[3])) {
+	
+		if (bulletintervalCount == bulletinterval) {
+			bulletintervalCount = 0;
+			for (int index = 0;index < 10;index++) {
+				if (isUse[index]) { continue; }
+
+				bulletX[index] = playerX;
+				bulletY[index] = playerY;
+				bulletState[index] = animState;
+				isUse[index] = true;
+				break;
+			}
+
+		}
+	}
+
+	//’e‚ÌˆÚ“®
+	for (int index = 0;index < 10;index++) {
+		if (!isUse[index]) { continue; }
+
+		if (bulletState[index] == L) {
+			bulletX[index] -= 10;
+		}
+		if (bulletState[index] == R) {
+			bulletX[index] += 10;
+		}
+		if (bulletX[index] >= 1280 || bulletX[index] <= 0) {
+			isUse[index] = false;
+		}
+	}
+
+
+	bulletintervalCount++;
+		if (bulletintervalCount >= bulletinterval) {
+			bulletintervalCount = bulletinterval;
+		}
 
 }
 
@@ -121,9 +185,23 @@ void Player::Draw() {
 	if (animFlag == 3) {
 		animIndex = 6;
 	}
-
+	if (animFlag == 4) {
+		if (!jump) {
+			animIndex = 12;
+		}
+		else {
+			animIndex = 8;
+		}
+	}
 
 	DrawGraph(playerX, playerY, playerHandle[animState][animIndex], true);
+
+	for (int index = 0;index < 10;index++) {
+		if (!isUse[index]) { continue; }
+	
+		DrawGraph(bulletX[index], bulletY[index], bulletHandle[bulletState[index]][index], true);
+	
+	}
 	
 }
 
