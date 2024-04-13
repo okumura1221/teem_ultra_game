@@ -93,10 +93,12 @@ void DrawPlay() {
 	}
 	DrawCircle(600, 300, 1200, Color, true);
 
+
 	CMap->Draw();
 	player[0].Draw();
 	player[1].Draw();
 	
+	//Ÿ—˜‰æ‘œ•`‰æ
 	if (player[0].GetPlayerHP() <= 0) {
 		DrawGraph(0, 0, winHandle[1],true);
 	}else
