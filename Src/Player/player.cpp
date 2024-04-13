@@ -3,7 +3,8 @@
 
 //初期化
 void Player::Init(int player_no) {
-
+	
+	//プレイヤー画像読み込み
 	LoadDivGraph("Data/Player/player_R.png", 14, 3, 5, 64, 64, playerHandle[0]);
 	LoadDivGraph("Data/Player/player_L.png", 14, 3, 5, 64, 64, playerHandle[1]);
 	
@@ -13,7 +14,7 @@ void Player::Init(int player_no) {
 	
 
 	//１Pと２Pの分け
-	if (player_no == 1) {
+	if (player_no == 1) {//1P初期化
 		animState = R;
 		hpHandle = LoadGraph("Data/Player/hp.png");
 		for (int index = 0;index < 10;index++) {
@@ -25,9 +26,9 @@ void Player::Init(int player_no) {
 		button[2]= KEY_INPUT_W;
 		button[3]= KEY_INPUT_SPACE;
 		playerNextX = 50;
-		playerNextY = 600;
+		playerNextY = 608;
 	}
-	else {
+	else {//２ｐ初期化
 		animState = L;
 		hpHandle = LoadGraph("Data/Player/hp2.png");
 		for (int index = 0;index < 10;index++) {
@@ -39,10 +40,13 @@ void Player::Init(int player_no) {
 		button[2] = KEY_INPUT_NUMPAD8;
 		button[3] = KEY_INPUT_NUMPADENTER;
 		playerNextX =1150;
-		playerNextY = 600;
+		playerNextY = 608;
 	}
 
 	hp = 100;
+	alphaCount = 0;
+	danger = false;
+	alphaFlag = false;
 	playerSizeX = 64;
 	playerSizeY = 64;
 	playerSpeed = 5;
@@ -51,6 +55,7 @@ void Player::Init(int player_no) {
 	jumpPower = 20;
 	
 
+	//弾の初期化
 	for (int index = 0;index < 10;index++) {
 		bulletX[index] = 0;
 		bulletY[index] = 0;
@@ -65,6 +70,7 @@ void Player::Init(int player_no) {
 
 void Player::Step() {
 
+	//アニメーションを決定
 	if (playerX == playerNextX&&!jump) {
 		animFlag = 0;
 	}
@@ -89,7 +95,8 @@ void Player::Step() {
 	playerX = playerNextX;
 	playerY = playerNextY;
 
-	//移動処理
+	if (startCount >= 200&&hp>0) {
+		//移動処理
 		if (Input::Keep(button[0])) {//左
 			playerNextX -= playerSpeed;
 			animState = L;
@@ -107,45 +114,46 @@ void Player::Step() {
 			}
 
 
-	//ジャンプ処理
-	if (!jump) {
-		jumpPower = 40;
-		if (Input::Push(button[2])) {
-			jump = true;
-		}
-	}
-	if (jump) {
-		playerNextY -= jumpPower;
-		jumpPower -= 1.2;
-		if (jumpPower <= 0) {
-			jumpPower = 0;
-		}
-	}
-	//重力
-	playerNextY += grav;
-
-
-	//弾の発射
-	if (Input::Push(button[3])) {
-	
-		if (bulletintervalCount == bulletinterval) {
-			bulletintervalCount = 0;
-			for (int index = 0;index < 10;index++) {
-				if (isUse[index]) { continue; }
-
-				bulletX[index] = playerX;
-				bulletY[index] = playerY;
-				bulletState[index] = animState;
-				isUse[index] = true;
-				if (!jump) {
-					damage[index] = 8;
-				}
-				else {
-					damage[index] = 5;
-				}
-				break;
+		//ジャンプ処理
+		if (!jump) {
+			jumpPower = 40;
+			if (Input::Push(button[2])) {
+				jump = true;
 			}
+		}
+		if (jump) {
+			playerNextY -= jumpPower;
+			jumpPower -= 1.2;
+			if (jumpPower <= 0) {
+				jumpPower = 0;
+			}
+		}
+		//重力
+		playerNextY += grav;
 
+
+		//弾の発射
+		if (Input::Push(button[3])) {
+
+			if (bulletintervalCount == bulletinterval) {
+				bulletintervalCount = 0;
+				for (int index = 0;index < 10;index++) {
+					if (isUse[index]) { continue; }
+
+					bulletX[index] = playerX;
+					bulletY[index] = playerY;
+					bulletState[index] = animState;
+					isUse[index] = true;
+					if (!jump) {
+						damage[index] = 8;
+					}
+					else {
+						damage[index] = 5;
+					}
+					break;
+				}
+
+			}
 		}
 	}
 
@@ -174,12 +182,12 @@ void Player::Step() {
 
 void Player::Draw() {
 
-	//アニメーション
-	if (animFlag == 0) {
+	//アニメーションによって処理を変える
+	if (animFlag == 0) {//立ち
 		animIndex = 9;
 	}
 
-	if (animFlag == 1) {
+	if (animFlag == 1) {//歩き
 		changeAnimFlame = 7;
 		animFlameCount++;
 		if (animFlameCount >= changeAnimFlame) {
@@ -191,14 +199,14 @@ void Player::Draw() {
 		}
 	}
 
-	if (animFlag == 2) {
+	if (animFlag == 2) {//空中
 		animIndex = 7;
 	}
 
-	if (animFlag == 3) {
+	if (animFlag == 3) {//空中
 		animIndex = 6;
 	}
-	if (animFlag == 4) {
+	if (animFlag == 4) {//射撃
 		if (!jump) {
 			animIndex = 12;
 		}
@@ -217,8 +225,34 @@ void Player::Draw() {
 		DrawGraph(bulletX[index], bulletY[index], bulletHandle[bulletState[index]][index], true);
 	}
 	
-	DrawCircleGauge(playerX + 32, playerY - 20, hp,hpHandle, 0.0);
+	if (hp < 30) {
+		danger = true;
+	}
 
+	
+	//ＨＰ表示。処理瀕死になると点滅する。
+	int alpha;
+	if (danger) {
+		alphaCount++;
+		if (alphaCount > 30) {
+			alphaCount = 0;
+			if (alphaFlag) {
+				alphaFlag = false;
+			}
+			else {
+				alphaFlag = true;
+			}
+		}
+	}
+	if (!alphaFlag) {
+		alpha = 255;
+	}
+	else {
+		alpha = 0;
+	}
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+	DrawCircleGauge(playerX + 32, playerY - 20, hp,hpHandle, 0.0);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 1);
 }
 
 

@@ -15,4 +15,4 @@ enum SCENE {
 };
 extern SCENE scene;
 
-
+extern int startCount;

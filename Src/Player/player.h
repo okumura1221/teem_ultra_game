@@ -15,8 +15,9 @@ protected:
 	int button[4];//入力キー
 	int playerSizeX;//プレイヤー画像のXサイズ
 	int playerSizeY;//プレイヤー画像のYサイズ
-	int hpHandle;
+	int hpHandle;//プレイヤーHP画像
 	int hp;//プレイヤーのHP
+	int alphaCount;//
 
 	float playerX;//ｘ座標
 	float playerNextX;//次のフレームのｘ座標
@@ -33,6 +34,8 @@ protected:
 	int animFlameCount;//切り替え時間カウント
 
 	bool jump;//ジャンプ中かどうか
+	bool alphaFlag;
+	bool danger;//ｈｐがピンチかどうか
 
 	//弾変数
 	int bulletHandle[2][10];//弾の画像
@@ -84,6 +87,9 @@ public:
 
 	//プレイヤーのＹサイズを得る
 	int GetPlayerSizeY() { return playerSizeY; }
+
+	//プレイヤーの体力を得る
+	int GetPlayerHP() { return hp; }
 
 	//プレイヤーがジャンプ可能にする
 	void SetJump() { jump = false; }
