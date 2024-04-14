@@ -11,7 +11,7 @@ class Player {
 
 protected:
 	//プレイヤー変数
-	int playerHandle[2][19];//プレイヤー画像
+	int playerHandle[2][18];//プレイヤー画像
 	int button[4];//入力キー
 	int playerSizeX;//プレイヤー画像のXサイズ
 	int playerSizeY;//プレイヤー画像のYサイズ
@@ -38,6 +38,11 @@ protected:
 	bool jump;//ジャンプ中かどうか
 	bool alphaFlag;
 	bool danger;//ｈｐがピンチかどうか
+
+	bool HitPlayerDamage;//プレイヤーが攻撃を受けた場合
+	int HitJunpflmcnt;
+	float HitFly_x;
+	float HitFly_y;
 
 	//弾変数
 	int bulletHandle[2][10];//弾の画像
@@ -101,6 +106,16 @@ public:
 
 	//プレイヤーの進んでいる方向をチェック
 	void GetMoveDirection(bool* _dirArray);
+
+
+
+	//HitPlayerDamageの状態をとる
+	void SetHitPlayerDamage();
+	//吹っ飛ぶ方向
+	void HitFlyDirection(int Direction_1, int Direction_2);
+	//キャラの向きをとる
+	int SetDirection();
+
 
 	//弾
 

@@ -42,6 +42,16 @@ void StepPlay() {
 	player[0].Step();
 	player[1].Step();
 
+
+
+	//わるあがきをしました
+	////やられ吹っ飛び
+	//player[0].HitFlyDirection(player[0].SetDirection(), player[1].SetDirection());
+	//player[1].HitFlyDirection(player[1].SetDirection(), player[0].SetDirection());
+
+
+
+
 		//プレイヤー１の弾とプレイヤー２の当たり判定
 	for (int index = 0;index < 10;index++) {
 
@@ -50,6 +60,8 @@ void StepPlay() {
 			player[0].GetBulletPosX(index), player[0].GetBulletPosY(index), player[0].GetBulletSizeX(), player[0].GetBulletSizeY())) {
 			player[1].InDamage(player[0].GetBulletDamage(index));//あったったらダメージを受ける
 			player[0].SetBulletIsUse(index);//弾を消す
+
+			player[1].SetHitPlayerDamage();
 		}
 	}
 
@@ -61,6 +73,8 @@ void StepPlay() {
 			player[1].GetBulletPosX(index), player[1].GetBulletPosY(index), player[1].GetBulletSizeX(), player[1].GetBulletSizeY())) {
 			player[0].InDamage(player[1].GetBulletDamage(index));//あったったらダメージを受ける
 			player[1].SetBulletIsUse(index);//弾を消す
+
+			player[0].SetHitPlayerDamage();
 		}
 	}
 

@@ -5,8 +5,8 @@
 void Player::Init(int player_no) {
 	
 	//プレイヤー画像読み込み
-	LoadDivGraph("Data/Player/player_R.png", 19, 3, 7, 64, 64, playerHandle[0]);
-	LoadDivGraph("Data/Player/player_L.png", 19, 3, 7, 64, 64, playerHandle[1]);
+	LoadDivGraph("Data/Player/player_R.png", 18, 3, 6, 64, 64, playerHandle[0]);
+	LoadDivGraph("Data/Player/player_L.png", 18, 3, 6, 64, 64, playerHandle[1]);
 	
 	animIndex = 0;
 	animFlag = 0;
@@ -60,8 +60,10 @@ void Player::Init(int player_no) {
 	jump = false;
 	grav = 15.0;
 	jumpPower = 20;
-	
-
+	HitPlayerDamage = false;
+	HitJunpflmcnt = 0;
+	HitFly_x=20;
+	HitFly_y=20;
 	//弾の初期化
 	for (int index = 0;index < 10;index++) {
 		bulletX[index] = 0;
@@ -138,6 +140,27 @@ void Player::Step() {
 		//重力
 		playerNextY += grav;
 
+		
+		//ダメージを受けた時の吹っ飛び処理
+		if (HitPlayerDamage)
+		{
+			playerNextX -= HitFly_x;
+			if (HitFly_x <= 0) HitFly_x = 0;
+			HitFly_x -= 1.2;
+			playerNextY -= HitFly_y;
+			HitFly_y -= 1.2;
+			
+			if (HitFly_y <= 0) HitFly_y = 0;
+			
+			HitJunpflmcnt++;
+			if (HitJunpflmcnt >= 15)HitPlayerDamage = false;
+		}
+		else
+		{
+			HitFly_x = 20;
+			HitFly_y = 20;
+			HitJunpflmcnt = 0;
+		}
 
 		//弾の発射
 		if (Input::Push(button[3])) {
@@ -233,14 +256,20 @@ void Player::Draw() {
 		}
 	}
 
+	if(hp<=0)animIndex = 11;//死亡
+
 	//プレイヤー描画
+	//if (alphaFlag)
+	//	SetDrawBlendMode(DX_BLENDGRAPHTYPE_ALPHA, 5);
 	DrawGraph(playerX, playerY, playerHandle[animState][animIndex], true);
+	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	//弾画像
 	for (int index = 0;index < 10;index++) {
 		if (!isUse[index]) { continue; }
-	
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		DrawGraph(bulletX[index], bulletY[index], bulletHandle[bulletState[index]][index], true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 	
 	if (hp < 30) {
@@ -298,4 +327,23 @@ void Player::GetMoveDirection(bool* _dirArray) {
 	if (GetNextPlayerPosY() < GetPlayerPosY()) {
 		_dirArray[0] = true;
 	}
+}
+
+void Player::SetHitPlayerDamage()
+{
+	HitPlayerDamage = true;
+}
+
+void Player::HitFlyDirection(int Direction_1, int Direction_2)
+{
+	if (HitPlayerDamage)
+	{
+		if (Direction_1 != Direction_2)animIndex = 13;
+		else animIndex = 9;
+	}
+}
+
+int Player::SetDirection()
+{
+	return animState;
 }
