@@ -3,9 +3,11 @@
 #include "../../Common.h"
 #include "../../Input/input.h"
 
-#define TITLE_PATH "Data/Title/タイトル（tanku）.png"
-
+#define TITLE_PATH "Data/Title/title.png"
+#define TITLE_CLICK_BEFORE_PATH "Data/Title/title_click_before.png"
+#define TITLE_CLICK_AFTER_PATH "Data/Title/title_click_after.png"
 int TitleHandle;
+int TitleclickHandle[2];
 int titlebgmcount = 0;
 int nextstopcount = 0;
 bool titleflag = false;
@@ -13,6 +15,8 @@ bool titleflag = false;
 void InitTitle()
 {
 	TitleHandle = LoadGraph(TITLE_PATH);
+	TitleclickHandle[0] = LoadGraph(TITLE_CLICK_BEFORE_PATH);
+	TitleclickHandle[1] = LoadGraph(TITLE_CLICK_AFTER_PATH);
 
 	scene = SCENE_LOOP_TITLE;
 }
@@ -47,6 +51,8 @@ void DrawTitle()
 {
 	//タイトル描画
 	DrawGraph(0, 0, TitleHandle, true);
+	DrawGraph(0, 0, TitleclickHandle[0], true);
+
 }
 
 void FinTitle()

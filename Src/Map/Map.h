@@ -12,7 +12,7 @@ class Map
 {
 private:
 	// マップチップハンドル
-	int mapHandle[3];
+	int mapHandle[4];
 
 public:
 	Map();
