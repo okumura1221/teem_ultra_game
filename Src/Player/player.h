@@ -11,13 +11,15 @@ class Player {
 
 protected:
 	//プレイヤー変数
-	int playerHandle[2][14];//プレイヤー画像
+	int playerHandle[2][19];//プレイヤー画像
 	int button[4];//入力キー
 	int playerSizeX;//プレイヤー画像のXサイズ
 	int playerSizeY;//プレイヤー画像のYサイズ
-	int hpHandle;//プレイヤーHP画像
+	int hpBaseHandle;//プレイヤーHP土台画像
+	int hpHandle[3];//プレイヤーHP画像
 	int hp;//プレイヤーのHP
 	int alphaCount;//
+	int hpColorFlag;//HPの色変動変数
 
 	float playerX;//ｘ座標
 	float playerNextX;//次のフレームのｘ座標

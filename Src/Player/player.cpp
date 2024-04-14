@@ -5,18 +5,21 @@
 void Player::Init(int player_no) {
 	
 	//プレイヤー画像読み込み
-	LoadDivGraph("Data/Player/player_R.png", 14, 3, 5, 64, 64, playerHandle[0]);
-	LoadDivGraph("Data/Player/player_L.png", 14, 3, 5, 64, 64, playerHandle[1]);
+	LoadDivGraph("Data/Player/player_R.png", 19, 3, 7, 64, 64, playerHandle[0]);
+	LoadDivGraph("Data/Player/player_L.png", 19, 3, 7, 64, 64, playerHandle[1]);
 	
 	animIndex = 0;
 	animFlag = 0;
 	animFlameCount = 0;
-	
+
 
 	//１Pと２Pの分け
 	if (player_no == 1) {//1P初期化
 		animState = R;
-		hpHandle = LoadGraph("Data/Player/hp.png");
+		hpHandle[0] = LoadGraph("Data/Player/hp_green.png");
+		hpHandle[1] = LoadGraph("Data/Player/hp_yellow.png");
+		hpHandle[2] = LoadGraph("Data/Player/hp_red.png");
+		hpBaseHandle = LoadGraph("Data/Player/hp_base.png");
 		for (int index = 0;index < 10;index++) {
 			bulletHandle[0][index] = LoadGraph("Data/Player/attack_R.png");
 			bulletHandle[1][index] = LoadGraph("Data/Player/attack_L.png");
@@ -30,7 +33,10 @@ void Player::Init(int player_no) {
 	}
 	else {//２ｐ初期化
 		animState = L;
-		hpHandle = LoadGraph("Data/Player/hp2.png");
+		hpHandle[0] = LoadGraph("Data/Player/hp_green.png");
+		hpHandle[1] = LoadGraph("Data/Player/hp_yellow.png");
+		hpHandle[2] = LoadGraph("Data/Player/hp_red.png");
+		hpBaseHandle = LoadGraph("Data/Player/hp_base.png");
 		for (int index = 0;index < 10;index++) {
 			bulletHandle[0][index] = LoadGraph("Data/Player/attack2_R.png");
 			bulletHandle[1][index] = LoadGraph("Data/Player/attack2_L.png");
@@ -47,6 +53,7 @@ void Player::Init(int player_no) {
 	alphaCount = 0;
 	danger = false;
 	alphaFlag = false;
+	hpColorFlag = 0;
 	playerSizeX = 64;
 	playerSizeY = 64;
 	playerSpeed = 5;
@@ -184,7 +191,18 @@ void Player::Draw() {
 
 	//アニメーションによって処理を変える
 	if (animFlag == 0) {//立ち
-		animIndex = 9;
+		changeAnimFlame = 7;
+		animFlameCount++;
+		if (animFlameCount >= changeAnimFlame) {
+			animFlameCount = 0;
+			animIndex++;
+			if (animIndex >= 18) {
+				animIndex = 14;
+			}
+			else if (animIndex <= 14) {
+				animIndex = 17;
+			}
+		}
 	}
 
 	if (animFlag == 1) {//歩き
@@ -229,6 +247,8 @@ void Player::Draw() {
 		danger = true;
 	}
 
+	if (hp <= 50)hpColorFlag = 1;
+	if (hp <= 30)hpColorFlag = 2;
 	
 	//ＨＰ表示。処理瀕死になると点滅する。
 	int alpha;
@@ -251,7 +271,8 @@ void Player::Draw() {
 		alpha = 0;
 	}
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
-	DrawCircleGauge(playerX + 32, playerY - 20, hp,hpHandle, 0.0);
+	DrawCircleGauge(playerX + 32, playerY - 20, 100, hpBaseHandle, 0.0);
+	DrawCircleGauge(playerX + 32, playerY - 20, hp,hpHandle[hpColorFlag], 0.0);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 1);
 }
 

@@ -96,8 +96,10 @@ void DrawPlay() {
 
 	CMap->Draw();
 	player[0].Draw();
+	//2P‚ÍF‚ğ”½“]‚·‚é
+	SetDrawBlendMode(DX_BLENDMODE_INVSRC, 255);
 	player[1].Draw();
-	
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	//Ÿ—˜‰æ‘œ•`‰æ
 	if (player[0].GetPlayerHP() <= 0) {
 		DrawGraph(0, 0, winHandle[1],true);

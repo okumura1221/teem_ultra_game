@@ -52,7 +52,7 @@ void DrawTitle()
 	//タイトル描画
 	DrawGraph(0, 0, TitleHandle, true);
 	DrawGraph(0, 0, TitleclickHandle[0], true);
-
+	DrawFormatString(1155, 680, GetColor(255, 255, 255), "BGM:OtoLogic様");
 }
 
 void FinTitle()
