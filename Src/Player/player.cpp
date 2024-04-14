@@ -1,10 +1,21 @@
 #include "player.h"
 
+#define  RUN_PATH "Data/Sound/決定ボタンを押す38.mp3"
+#define  JUMP_PATH "Data/Sound/ジャンプの着地.mp3"
+#define  JUMP_PATH_2 "Data/Sound/キックの素振り2.mp3"
+#define  ATTACK_PATH "Data/Sound/火炎魔法1.mp3"
+#define  ATTACK_PATH_2 "Data_/Sound/「くらえ！」.mp3"
+#define  JUMP_PATH_3 "Data/Sound/「とう！」.mp3"
+#define  GUARD_PATH "Data/Sound/「ぐっ！」.mp3"
+#define  GUARD_PATH_2 "Data/Sound/「ぐああっ！」.mp3"
+#define  GUARD_PATH_3 "Data/Sound/「効かないぞ！」.mp3"
+
 
 //初期化
 void Player::Init(int player_no) {
 	
 	//プレイヤー画像読み込み
+
 	LoadDivGraph("Data/Player/player_R.png", 18, 3, 6, 64, 64, playerHandle[0]);
 	LoadDivGraph("Data/Player/player_L.png", 18, 3, 6, 64, 64, playerHandle[1]);
 	
@@ -12,7 +23,19 @@ void Player::Init(int player_no) {
 	animFlag = 0;
 	animFlameCount = 0;
 
+	//runsounnd = LoadGraph(RUN_PATH);
+	//damagevoice[0] = LoadSoundMem(ATTACK_PATH);
+	//damagevoice[1] = LoadSoundMem(ATTACK_PATH_2);
+	//damagevoice[2] = LoadSoundMem(JUMP_PATH);
+	//	titlebgmhandle = LoadSoundMem(JUMP_PATH_2);
+	//	jumpvoice[] = LoadSoundMem(JUMP_PATH_3);
+	//	jumpvoice[0] = LoadSoundMem(GUARD_PATH);
+	//	jumpvoice[1] = LoadSoundMem(GUARD_PATH_2);
+	//	jumpvoice[2] = LoadSoundMem(GUARD_PATH_3);
 
+	// damagevoice[3];
+	// Attackvoice[2];
+	// jumpvoice[3];
 	//１Pと２Pの分け
 	if (player_no == 1) {//1P初期化
 		animState = R;
@@ -329,7 +352,7 @@ void Player::GetMoveDirection(bool* _dirArray) {
 	}
 }
 
-void Player::SetHitPlayerDamage()
+void Player::GetHitPlayerDamage()
 {
 	HitPlayerDamage = true;
 }
@@ -343,7 +366,12 @@ void Player::HitFlyDirection(int Direction_1, int Direction_2)
 	}
 }
 
-int Player::SetDirection()
+int Player::GetDirection()
 {
 	return animState;
+}
+
+int Player::GetHP()
+{
+	return hp;
 }

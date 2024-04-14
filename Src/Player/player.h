@@ -44,6 +44,11 @@ protected:
 	float HitFly_x;
 	float HitFly_y;
 
+	int runsounnd;
+	int damagevoice[3];
+	int Attackvoice[2];
+	int jumpvoice[3];
+
 	//’e•Ï”
 	int bulletHandle[2][10];//’e‚Ì‰æ‘œ
 	int bulletState[10];//’e‚ÌŒü‚«
@@ -110,13 +115,13 @@ public:
 
 
 	//HitPlayerDamage‚Ìó‘Ô‚ğ‚Æ‚é
-	void SetHitPlayerDamage();
+	void GetHitPlayerDamage();
 	//‚Á”ò‚Ô•ûŒü
 	void HitFlyDirection(int Direction_1, int Direction_2);
 	//ƒLƒƒƒ‰‚ÌŒü‚«‚ğ‚Æ‚é
-	int SetDirection();
-
-
+	int GetDirection();
+	//ƒLƒƒƒ‰‚ÌHP‚ğæ“¾‚·‚é
+	int GetHP();
 	//’e
 
 	//’e‚ÌxÀ•W‚ğ“¾‚é

@@ -3,7 +3,14 @@
 #include "../../Player/player.h"
 #include "../../Collision/Collision.h"
 
-                    
+#define  BATTLE_START_BGM_PATH "Data/Sound/battle_start.ogg"
+#define  BATTLE_EARLY_BGM_PATH "Data/Sound/battle_bgm_early.ogg"
+#define  BATTLE_FINAL_BGM_PATH "Data/Sound/battle_bgm_final.ogg"
+#define  BATTLE_WIN_BGM_PATH "Data/Sound/battle_winner.ogg"
+#define  BATTLE_WIN_VOICE_PATH "Data/Sound/「やった！」.mp3"
+#define  BATTLE_LOSS_VOICE_PATH "Data/Sound/「ぐああーーっ！」.mp3"
+
+
 Player* player;
 Map* CMap;
 MAPCollision mapcollision;
@@ -13,6 +20,23 @@ int startCount;
 int winHandle[2];
 int finishCount;
 
+int shadowcolor_2;
+
+int battlestartbgm;
+
+int battlebgm[2];
+
+int battlewinbgm;
+
+int bgmindex;
+
+bool bgmflag;
+
+bool winbgmflag;
+
+int mountainHandle;
+ 
+int lastvoise[2];
 //初期化
 void InitPlay() {
 	
@@ -22,6 +46,10 @@ void InitPlay() {
 	winHandle[1] = LoadGraph("Data/2p_win.png");//勝利画像
 	finishCount = 0;//決着がついた後の自由時間
 
+	shadowcolor_2 = 0;
+	bgmindex = 0;
+	bgmflag = false;
+	winbgmflag = false;
 	player = new Player[2];
 	CMap =new Map;
 
@@ -30,19 +58,52 @@ void InitPlay() {
 	player[0].Init(1);
 	player[1].Init(2);
 
+	battlestartbgm= LoadSoundMem(BATTLE_START_BGM_PATH);
+	battlebgm[0] = LoadSoundMem(BATTLE_EARLY_BGM_PATH);
+	battlebgm[1] = LoadSoundMem(BATTLE_FINAL_BGM_PATH);
+	battlewinbgm = LoadSoundMem(BATTLE_WIN_BGM_PATH);
+	lastvoise[0] = LoadSoundMem(BATTLE_WIN_VOICE_PATH);
+	lastvoise[1] = LoadSoundMem(BATTLE_LOSS_VOICE_PATH);
+
+	PlaySoundMem(battlestartbgm, DX_PLAYTYPE_BACK, true);
+
 	scene = SCENE_LOOP_PLAY;
+
+	mountainHandle = LoadGraph("Data/fuji.png");
 }
 
 
 
 //通常処理
 void StepPlay() {
+	if (shadowcolor_2 <= 255)shadowcolor_2 += 10;
+	SetDrawBright(shadowcolor_2, shadowcolor_2, shadowcolor_2);
 
+	if (player[0].GetHP() <= 50 || player[1].GetHP() <= 50)
+	{
+		StopSoundMem(battlebgm[0]);
+		if (CheckSoundMem(battlebgm[0]) == 0 && CheckSoundMem(battlebgm[1]) == 0)
+			PlaySoundMem(battlebgm[1], DX_PLAYTYPE_LOOP, true);
+	}
+	if (player[0].GetHP() <= 0 || player[1].GetHP() <= 0)
+	{
+		
+
+		StopSoundMem(battlebgm[1]);
+		if (CheckSoundMem(battlebgm[0]) == 0 && CheckSoundMem(battlewinbgm) == 0 && !winbgmflag)
+		{
+			PlaySoundMem(battlewinbgm, DX_PLAYTYPE_BACK, true);
+			winbgmflag = true;
+		}
+	}
 	//プレイヤー処理
 	player[0].Step();
 	player[1].Step();
-
-
+	if (!bgmflag&& startCount >= 200)
+	{
+		PlaySoundMem(battlebgm[0], DX_PLAYTYPE_LOOP, true);
+		bgmflag = true;
+	}
 
 	//わるあがきをしました
 	////やられ吹っ飛び
@@ -61,7 +122,7 @@ void StepPlay() {
 			player[1].InDamage(player[0].GetBulletDamage(index));//あったったらダメージを受ける
 			player[0].SetBulletIsUse(index);//弾を消す
 
-			player[1].SetHitPlayerDamage();
+			player[1].GetHitPlayerDamage();
 		}
 	}
 
@@ -74,7 +135,7 @@ void StepPlay() {
 			player[0].InDamage(player[1].GetBulletDamage(index));//あったったらダメージを受ける
 			player[1].SetBulletIsUse(index);//弾を消す
 
-			player[0].SetHitPlayerDamage();
+			player[0].GetHitPlayerDamage();
 		}
 	}
 
@@ -84,6 +145,10 @@ void StepPlay() {
 	//勝利画像処理
 	if (player[0].GetPlayerHP() <= 0 || player[1].GetPlayerHP() <= 0) {
 		finishCount++;
+		if (finishCount == 1)
+		PlaySoundMem(lastvoise[1], DX_PLAYTYPE_BACK, true);
+		if (finishCount == 400)
+		PlaySoundMem(lastvoise[0], DX_PLAYTYPE_BACK, true);
 		if (finishCount >= 600) {
 			scene = SCENE_FIN_PLAY;
 		}
@@ -96,8 +161,9 @@ void StepPlay() {
 //描画処理
 void DrawPlay() {
 
-	int Color;
 
+	int Color;
+	
 	if (startCount < 200) {
 		startCount++;
 		Color = GetColor(0, 0, 0);
@@ -107,6 +173,7 @@ void DrawPlay() {
 	}
 	DrawCircle(600, 300, 1200, Color, true);
 
+	DrawGraph(0, 0, mountainHandle, true);
 
 	CMap->Draw();
 	player[0].Draw();
@@ -122,6 +189,9 @@ void DrawPlay() {
 		DrawGraph(0, 0, winHandle[0], true);
 	}
 
+
+	DrawFormatString(1155, 600, GetColor(255, 0, 0), "%d,%d", player[0].GetHP(), player[1].GetHP());
+
 }
 
 
@@ -135,6 +205,13 @@ void FinPlay() {
 	CMap = nullptr;
 	DeleteGraph(winHandle[0]);
 	DeleteGraph(winHandle[1]);
+	DeleteSoundMem(battlestartbgm);
+	DeleteSoundMem(battlebgm[0]);
+	DeleteSoundMem(battlebgm[1]);
+	DeleteSoundMem(battlewinbgm);
+	DeleteSoundMem(mountainHandle);
+	DeleteSoundMem(lastvoise[0]);
+	DeleteSoundMem(lastvoise[1]);
 	scene = SCENE_INIT_TITLE;
 
 }
