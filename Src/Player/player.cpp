@@ -164,9 +164,10 @@ void Player::Step() {
 
 		//’e‚Ì”­ŽË
 		if (Input::Push(button[3])) {
-			PlaySoundMem(Attackvoice[GetRand(1)], DX_PLAYTYPE_BACK, true);
+		
 			if (bulletintervalCount == bulletinterval) {
 				bulletintervalCount = 0;
+				PlaySoundMem(Attackvoice[GetRand(1)], DX_PLAYTYPE_BACK, true);
 				for (int index = 0;index < 10;index++) {
 					if (isUse[index]) { continue; }
 

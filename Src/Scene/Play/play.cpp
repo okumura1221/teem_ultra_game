@@ -9,7 +9,7 @@
 #define  BATTLE_WIN_BGM_PATH "Data/Sound/battle_winner.ogg"
 #define  BATTLE_WIN_VOICE_PATH "Data/Sound/「やった！」.mp3"
 #define  BATTLE_LOSS_VOICE_PATH "Data/Sound/「ぐああーーっ！」.mp3"
-
+#define BATTLR_HIT_ATTACK "Data/Sound/パンチの衣擦れ2.mp3"
 
 Player* player;
 Map* CMap;
@@ -30,6 +30,8 @@ int battlestartbgm;
 int battlebgm[2];
 
 int battlewinbgm;
+
+int hitSE;
 
 int bgmindex;
 
@@ -67,6 +69,7 @@ void InitPlay() {
 	battlewinbgm = LoadSoundMem(BATTLE_WIN_BGM_PATH);
 	lastvoise[0] = LoadSoundMem(BATTLE_WIN_VOICE_PATH);
 	lastvoise[1] = LoadSoundMem(BATTLE_LOSS_VOICE_PATH);
+	hitSE = LoadSoundMem(BATTLR_HIT_ATTACK);
 
 	shadowcolor_2 = 0;
 	bgmindex = 0;
@@ -127,6 +130,7 @@ void StepPlay() {
 				player[1].InDamage(player[0].GetBulletDamage(index), player[0].GetBulletState(index));//あったったらダメージを受ける
 				player[0].SetBulletIsUse(index);//弾を消す
 				hitInterval[1] = 0;
+				PlaySoundMem(hitSE, DX_PLAYTYPE_BACK, true);
 			}
 		}
 	}
@@ -142,6 +146,7 @@ void StepPlay() {
 				player[0].InDamage(player[1].GetBulletDamage(index), player[1].GetBulletState(index));//あったったらダメージを受ける
 				player[1].SetBulletIsUse(index);//弾を消す
 				hitInterval[0] = 0;
+				PlaySoundMem(hitSE, DX_PLAYTYPE_BACK, true);
 			}
 		}
 	}
