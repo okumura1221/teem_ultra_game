@@ -4,7 +4,7 @@
 #define  JUMP_PATH "Data/Sound/ジャンプの着地.mp3"
 #define  JUMP_PATH_2 "Data/Sound/キックの素振り2.mp3"
 #define  ATTACK_PATH "Data/Sound/火炎魔法1.mp3"
-#define  ATTACK_PATH_2 "Data_/Sound/「くらえ！」.mp3"
+#define  ATTACK_PATH_2 "Data/Sound/「くらえ！」.mp3"
 #define  JUMP_PATH_3 "Data/Sound/「とう！」.mp3"
 #define  GUARD_PATH "Data/Sound/「ぐっ！」.mp3"
 #define  GUARD_PATH_2 "Data/Sound/「ぐああっ！」.mp3"
@@ -23,19 +23,17 @@ void Player::Init(int player_no) {
 	animFlag = 0;
 	animFlameCount = 0;
 
-	//runsounnd = LoadGraph(RUN_PATH);
-	//damagevoice[0] = LoadSoundMem(ATTACK_PATH);
-	//damagevoice[1] = LoadSoundMem(ATTACK_PATH_2);
-	//damagevoice[2] = LoadSoundMem(JUMP_PATH);
-	//	titlebgmhandle = LoadSoundMem(JUMP_PATH_2);
-	//	jumpvoice[] = LoadSoundMem(JUMP_PATH_3);
-	//	jumpvoice[0] = LoadSoundMem(GUARD_PATH);
-	//	jumpvoice[1] = LoadSoundMem(GUARD_PATH_2);
-	//	jumpvoice[2] = LoadSoundMem(GUARD_PATH_3);
+		runsounnd = LoadGraph(RUN_PATH);
+		damagevoice[0] = LoadSoundMem(GUARD_PATH);
+		damagevoice[1] = LoadSoundMem(GUARD_PATH_2);
+		damagevoice[2] = LoadSoundMem(GUARD_PATH_3);
+		Attackvoice[0] = LoadSoundMem(ATTACK_PATH);
+		Attackvoice[1] = LoadSoundMem(ATTACK_PATH_2);
+		jumpvoice[0] = LoadSoundMem(JUMP_PATH_3);
+		jumpvoice[1] = LoadSoundMem(JUMP_PATH_2);
+		jumpvoice[2] = LoadSoundMem(JUMP_PATH);
 
-	// damagevoice[3];
-	// Attackvoice[2];
-	// jumpvoice[3];
+
 	//１Pと２Pの分け
 	if (player_no == 1) {//1P初期化
 		animState = R;
@@ -151,6 +149,7 @@ void Player::Step() {
 			jumpPower = 40;
 			if (Input::Push(button[2])) {
 				jump = true;
+				PlaySoundMem(jumpvoice[GetRand(1)], DX_PLAYTYPE_BACK, true);
 			}
 		}
 		if (jump) {
@@ -187,7 +186,7 @@ void Player::Step() {
 
 		//弾の発射
 		if (Input::Push(button[3])) {
-
+			PlaySoundMem(Attackvoice[GetRand(1)], DX_PLAYTYPE_BACK, true);
 			if (bulletintervalCount == bulletinterval) {
 				bulletintervalCount = 0;
 				for (int index = 0;index < 10;index++) {
@@ -259,6 +258,7 @@ void Player::Draw() {
 			animIndex++;
 			if (animIndex >= 6) {
 				animIndex = 0;
+				PlaySoundMem(runsounnd, DX_PLAYTYPE_BACK, true);
 			}
 		}
 	}
