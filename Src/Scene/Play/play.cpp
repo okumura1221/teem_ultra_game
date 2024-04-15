@@ -40,14 +40,37 @@ bool bgmflag;
 bool winbgmflag;
 
 int mountainHandle;
- 
+int mountainbackHandle;
+
+int cloudHandle[2][3];
+int cloud_x[2][3];
+int cloud_y[2][3];
 int lastvoise[2];
 
 //初期化
 void InitPlay() {
 	
 	//ステージの処理に使う
-	mountainHandle = LoadGraph("Data/fuji.png");
+	mountainHandle = LoadGraph("Data/fuji.png");//山画像
+	mountainbackHandle = LoadGraph("Data/fuji_back.png");//背景画像
+	for (int i = 0;i < 2;i++)//曇画像
+	{
+			cloudHandle[i][0] = LoadGraph("Data/cloud_1.png");
+			cloudHandle[i][1] = LoadGraph("Data/cloud_2.png");
+			cloudHandle[i][2] = LoadGraph("Data/cloud_3.png");	
+			for (int j = 0;j < 3;j++)
+			{
+				cloud_y[0][j] = GetRand(300);
+				cloud_y[1][j] = GetRand(200)+150;
+			}
+	}
+	cloud_x[0][0] = 0;
+	cloud_x[0][1] = (1280 / 2) - 126;
+	cloud_x[0][2] = 1280 - 270;
+	for (int i = 0;i < 3;i++)
+	{
+		cloud_x[1][i] = cloud_x[0][i]-1280;
+	}
 	startCount = 0;//移動可能までの時間
 	winHandle[0] = LoadGraph("Data/1p_win.png");//勝利画像
 	winHandle[1] = LoadGraph("Data/2p_win.png");//勝利画像
@@ -180,6 +203,16 @@ void StepPlay() {
 		}
 	}
 
+	for (int i = 0;i < 2;i++)
+	{
+		for (int j = 0;j < 3;j++)
+		{
+			cloud_x[i][j] += 3*(i+j+1);
+			if (cloud_x[i][0] >= (1280 + 484))cloud_x[i][0] = - 484;
+			if (cloud_x[i][1] >= (1280 + 252))cloud_x[i][1] = - 252;
+			if (cloud_x[i][2] >= (1280 + 541))cloud_x[i][2] = - 541;
+		}
+	}
 }
 
 
@@ -188,9 +221,19 @@ void StepPlay() {
 void DrawPlay() {
 
 
-	
+	DrawGraph(0, 0, mountainbackHandle, true);
 
+
+		for (int j = 0;j < 3;j++)
+		{
+			DrawGraph(cloud_x[0][j], cloud_y[0][j], cloudHandle[0][j], true);
+		}
+	
 	DrawGraph(0, 0, mountainHandle, true);
+	for (int j = 0;j < 3;j++)
+	{
+		DrawGraph(cloud_x[1][j], cloud_y[1][j], cloudHandle[1][j], true);
+	}
 
 	CMap->Draw();
 	player[0].Draw();
@@ -198,6 +241,7 @@ void DrawPlay() {
 	SetDrawBlendMode(DX_BLENDMODE_INVSRC, 255);
 	player[1].Draw();
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 	//勝利画像描画
 	if (player[0].GetPlayerHP() <= 0) {
 		DrawGraph(0, 0, winHandle[1],true);
@@ -205,7 +249,6 @@ void DrawPlay() {
 		if(player[1].GetPlayerHP() <= 0) {
 		DrawGraph(0, 0, winHandle[0], true);
 	}
-
 
 
 }
@@ -219,6 +262,15 @@ void FinPlay() {
 	player = nullptr;
 	delete CMap;
 	CMap = nullptr;
+	DeleteGraph(mountainHandle);
+	DeleteGraph(mountainbackHandle);
+	for (int i = 0;i < 2;i++)
+	{
+		for (int j = 0;j < 3;j++)
+		{
+			DeleteGraph(cloudHandle[i][j]);
+		}
+	}
 	DeleteGraph(winHandle[0]);
 	DeleteGraph(winHandle[1]);
 	DeleteSoundMem(battlestartbgm);
