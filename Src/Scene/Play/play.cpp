@@ -190,7 +190,6 @@ void DrawPlay() {
 	}
 
 
-	DrawFormatString(1155, 600, GetColor(255, 0, 0), "%d,%d", player[0].GetHP(), player[1].GetHP());
 
 }
 
