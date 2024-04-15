@@ -164,19 +164,42 @@ void Player::Step() {
 		playerNextY += grav;
 
 		
-		//ダメージを受けた時の吹っ飛び処理
+		//ダメージを受けた時の吹っ飛び処理(左)
 		if (HitPlayerDamage)
 		{
-			playerNextX -= HitFly_x;
-			if (HitFly_x <= 0) HitFly_x = 0;
-			HitFly_x -= 1.2;
-			playerNextY -= HitFly_y;
-			HitFly_y -= 1.2;
-			
-			if (HitFly_y <= 0) HitFly_y = 0;
-			
-			HitJunpflmcnt++;
-			if (HitJunpflmcnt >= 15)HitPlayerDamage = false;
+			for (int index = 0; index < 10; index++) {
+				if (bulletX[index] < playerX + playerSizeX) {
+					playerNextX -= HitFly_x;
+					if (HitFly_x <= 0) HitFly_x = 0;
+					HitFly_x -= 1.2;
+					playerNextY -= HitFly_y;
+					HitFly_y -= 1.2;
+
+					if (HitFly_y <= 0) HitFly_y = 0;
+
+					HitJunpflmcnt++;
+					if (HitJunpflmcnt >= 15)HitPlayerDamage = false;
+				}
+				break;
+			}
+		}
+		if (HitPlayerDamage)
+		{
+			for (int index = 0; index < 10; index++) {
+				if (bulletX[index] + bulletSizeX > playerX) {
+					playerNextX += HitFly_x;
+					if (HitFly_x <= 0) HitFly_x = 0;
+					HitFly_x += 1.2;
+					playerNextY -= HitFly_y;
+					HitFly_y -= 1.2;
+
+					if (HitFly_y <= 0) HitFly_y = 0;
+
+					HitJunpflmcnt++;
+					if (HitJunpflmcnt >= 15)HitPlayerDamage = false;
+				}
+				break;
+			}
 		}
 		else
 		{
@@ -184,6 +207,7 @@ void Player::Step() {
 			HitFly_y = 20;
 			HitJunpflmcnt = 0;
 		}
+		
 
 		//弾の発射
 		if (Input::Push(button[3])) {
