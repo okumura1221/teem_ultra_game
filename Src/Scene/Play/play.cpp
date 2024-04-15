@@ -15,10 +15,13 @@ Player* player;
 Map* CMap;
 MAPCollision mapcollision;
 
+//始まるまでの時間
 int startCount;
 
 int winHandle[2];
 int finishCount;
+
+int hitInterval[2];
 
 int shadowcolor_2;
 
@@ -37,19 +40,19 @@ bool winbgmflag;
 int mountainHandle;
  
 int lastvoise[2];
+
 //初期化
 void InitPlay() {
 	
 	//ステージの処理に使う
+	mountainHandle = LoadGraph("Data/fuji.png");
 	startCount = 0;//移動可能までの時間
 	winHandle[0] = LoadGraph("Data/1p_win.png");//勝利画像
 	winHandle[1] = LoadGraph("Data/2p_win.png");//勝利画像
 	finishCount = 0;//決着がついた後の自由時間
+	hitInterval[0] = 0;
+	hitInterval[1] = 0;
 
-	shadowcolor_2 = 0;
-	bgmindex = 0;
-	bgmflag = false;
-	winbgmflag = false;
 	player = new Player[2];
 	CMap =new Map;
 
@@ -65,27 +68,32 @@ void InitPlay() {
 	lastvoise[0] = LoadSoundMem(BATTLE_WIN_VOICE_PATH);
 	lastvoise[1] = LoadSoundMem(BATTLE_LOSS_VOICE_PATH);
 
+	shadowcolor_2 = 0;
+	bgmindex = 0;
+	bgmflag = false;
+	winbgmflag = false;
+
 	PlaySoundMem(battlestartbgm, DX_PLAYTYPE_BACK, true);
 
 	scene = SCENE_LOOP_PLAY;
-
-	mountainHandle = LoadGraph("Data/fuji.png");
 }
 
 
 
 //通常処理
 void StepPlay() {
+
+	//音
 	if (shadowcolor_2 <= 255)shadowcolor_2 += 10;
 	SetDrawBright(shadowcolor_2, shadowcolor_2, shadowcolor_2);
 
-	if (player[0].GetHP() <= 50 || player[1].GetHP() <= 50)
+	if (player[0].GetPlayerHP() <= 50 || player[1].GetPlayerHP() <= 50)
 	{
 		StopSoundMem(battlebgm[0]);
 		if (CheckSoundMem(battlebgm[0]) == 0 && CheckSoundMem(battlebgm[1]) == 0)
 			PlaySoundMem(battlebgm[1], DX_PLAYTYPE_LOOP, true);
 	}
-	if (player[0].GetHP() <= 0 || player[1].GetHP() <= 0)
+	if (player[0].GetPlayerHP() <= 0 || player[1].GetPlayerHP() <= 0)
 	{
 		
 
@@ -96,52 +104,52 @@ void StepPlay() {
 			winbgmflag = true;
 		}
 	}
+
+
+
 	//プレイヤー処理
 	player[0].Step();
 	player[1].Step();
+
 	if (!bgmflag&& startCount >= 200)
 	{
 		PlaySoundMem(battlebgm[0], DX_PLAYTYPE_LOOP, true);
 		bgmflag = true;
 	}
 
-	//わるあがきをしました
-	////やられ吹っ飛び
-	//player[0].HitFlyDirection(player[0].SetDirection(), player[1].SetDirection());
-	//player[1].HitFlyDirection(player[1].SetDirection(), player[0].SetDirection());
-
-
-
-
 		//プレイヤー１の弾とプレイヤー２の当たり判定
-	for (int index = 0;index < 10;index++) {
+	if (hitInterval[1] == 40) {
+		for (int index = 0;index < 10;index++) {
 
-		if (!player[0].GetBulletIsUse(index)) { continue; }
-		if (IsHitRect(player[1].GetPlayerPosX(), player[1].GetPlayerPosY(), player[1].GetPlayerSizeX(), player[1].GetPlayerSizeY(),
-			player[0].GetBulletPosX(index), player[0].GetBulletPosY(index), player[0].GetBulletSizeX(), player[0].GetBulletSizeY())) {
-			player[1].InDamage(player[0].GetBulletDamage(index));//あったったらダメージを受ける
-			player[0].SetBulletIsUse(index);//弾を消す
-
-			player[1].GetHitPlayerDamage();
+			if (!player[0].GetBulletIsUse(index)) { continue; }
+			if (IsHitRect(player[1].GetPlayerPosX(), player[1].GetPlayerPosY(), player[1].GetPlayerSizeX(), player[1].GetPlayerSizeY(),
+				player[0].GetBulletPosX(index), player[0].GetBulletPosY(index), player[0].GetBulletSizeX(), player[0].GetBulletSizeY())) {
+				player[1].InDamage(player[0].GetBulletDamage(index), player[0].GetBulletState(index));//あったったらダメージを受ける
+				player[0].SetBulletIsUse(index);//弾を消す
+				hitInterval[1] = 0;
+			}
 		}
 	}
 
-		//プレイヤー2の弾とプレイヤー1の当たり判定
-	for (int index = 0;index < 10;index++) {
+	//プレイヤー2の弾とプレイヤー1の当たり判定
+	if (hitInterval[0] == 40) {
+		
+		for (int index = 0;index < 10;index++) {
 
-		if (!player[1].GetBulletIsUse(index)) { continue; }
-		if (IsHitRect(player[0].GetPlayerPosX(), player[0].GetPlayerPosY(), player[0].GetPlayerSizeX(), player[0].GetPlayerSizeY(),
-			player[1].GetBulletPosX(index), player[1].GetBulletPosY(index), player[1].GetBulletSizeX(), player[1].GetBulletSizeY())) {
-			player[0].InDamage(player[1].GetBulletDamage(index));//あったったらダメージを受ける
-			player[1].SetBulletIsUse(index);//弾を消す
-
-			player[0].GetHitPlayerDamage();
+			if (!player[1].GetBulletIsUse(index)) { continue; }
+			if (IsHitRect(player[0].GetPlayerPosX(), player[0].GetPlayerPosY(), player[0].GetPlayerSizeX(), player[0].GetPlayerSizeY(),
+				player[1].GetBulletPosX(index), player[1].GetBulletPosY(index), player[1].GetBulletSizeX(), player[1].GetBulletSizeY())) {
+				player[0].InDamage(player[1].GetBulletDamage(index), player[1].GetBulletState(index));//あったったらダメージを受ける
+				player[1].SetBulletIsUse(index);//弾を消す
+				hitInterval[0] = 0;
+			}
 		}
 	}
 
 	//マップとの当たり判定
 	mapcollision.MapCollision();
 	
+
 	//勝利画像処理
 	if (player[0].GetPlayerHP() <= 0 || player[1].GetPlayerHP() <= 0) {
 		finishCount++;
@@ -154,6 +162,19 @@ void StepPlay() {
 		}
 	}
 
+	//試合開始までのカウント
+	if (startCount < 200) {
+		startCount++;
+	}
+
+	
+	for (int index = 0;index < 2;index++) {
+		hitInterval[index]++;
+		if (hitInterval[index] >= 40) {
+			hitInterval[index] = 40;
+		}
+	}
+
 }
 
 
@@ -162,16 +183,7 @@ void StepPlay() {
 void DrawPlay() {
 
 
-	int Color;
 	
-	if (startCount < 200) {
-		startCount++;
-		Color = GetColor(0, 0, 0);
-	}
-	else {
-		Color = GetColor(250, 250, 250);
-	}
-	DrawCircle(600, 300, 1200, Color, true);
 
 	DrawGraph(0, 0, mountainHandle, true);
 

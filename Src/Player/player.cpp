@@ -125,7 +125,7 @@ void Player::Step() {
 	playerX = playerNextX;
 	playerY = playerNextY;
 
-	if (startCount >= 200&&hp>0) {
+	if (startCount >= 200&&hp>0&&!HitPlayerDamage) {
 		//移動処理
 		if (Input::Keep(button[0])) {//左
 			playerNextX -= playerSpeed;
@@ -159,53 +159,7 @@ void Player::Step() {
 				jumpPower = 0;
 			}
 		}
-		//重力
-		playerNextY += grav;
-
 		
-		//ダメージを受けた時の吹っ飛び処理(左)
-		if (HitPlayerDamage)
-		{
-			for (int index = 0; index < 10; index++) {
-				if (bulletX[index] < playerX + playerSizeX) {
-					playerNextX -= HitFly_x;
-					if (HitFly_x <= 0) HitFly_x = 0;
-					HitFly_x -= 1.2;
-					playerNextY -= HitFly_y;
-					HitFly_y -= 1.2;
-
-					if (HitFly_y <= 0) HitFly_y = 0;
-
-					HitJunpflmcnt++;
-					if (HitJunpflmcnt >= 15)HitPlayerDamage = false;
-				}
-				break;
-			}
-		}
-		if (HitPlayerDamage)
-		{
-			for (int index = 0; index < 10; index++) {
-				if (bulletX[index] + bulletSizeX > playerX) {
-					playerNextX += HitFly_x;
-					if (HitFly_x <= 0) HitFly_x = 0;
-					HitFly_x += 1.2;
-					playerNextY -= HitFly_y;
-					HitFly_y -= 1.2;
-
-					if (HitFly_y <= 0) HitFly_y = 0;
-
-					HitJunpflmcnt++;
-					if (HitJunpflmcnt >= 15)HitPlayerDamage = false;
-				}
-				break;
-			}
-		}
-		else
-		{
-			HitFly_x = 20;
-			HitFly_y = 20;
-			HitJunpflmcnt = 0;
-		}
 		
 
 		//弾の発射
@@ -232,6 +186,8 @@ void Player::Step() {
 			}
 		}
 	}
+	//重力
+	playerNextY += grav;
 
 	//弾の移動
 	for (int index = 0;index < 10;index++) {
@@ -249,9 +205,67 @@ void Player::Step() {
 	}
 
 
+	//弾の発射間隔カウント
 	bulletintervalCount++;
 		if (bulletintervalCount >= bulletinterval) {
 			bulletintervalCount = bulletinterval;
+		}
+
+
+		//ノックバック処理
+		if (HitPlayerDamage) {
+
+			//左飛び
+			if (hitArea == L) {
+
+				//横飛び
+				playerNextX -= HitFly_x;
+				HitFly_x -= 1.2;
+				//縦飛び
+				playerNextY -= HitFly_y;
+				HitFly_y -= 1.2;
+
+				if (HitFly_x <= 0) {
+					HitFly_x = 0;
+				}
+				if (HitFly_y <= 0) {
+					HitFly_y = 0;
+				}
+
+				HitJunpflmcnt++;
+				if (HitJunpflmcnt >= 15) {
+					HitPlayerDamage = false;
+				}
+			}
+
+			//右飛び
+			if (hitArea == R) {
+
+				//横飛び
+				playerNextX += HitFly_x;
+				HitFly_x -=1.2;
+				//縦飛び
+				playerNextY -= HitFly_y;
+				HitFly_y -= 1.2;
+
+				if (HitFly_x <= 0) {
+					HitFly_x = 0;
+				}
+				if (HitFly_y <= 0) {
+					HitFly_y = 0;
+				}
+
+				HitJunpflmcnt++;
+				if (HitJunpflmcnt >= 15) {
+					HitPlayerDamage = false;
+				}
+			}
+			animFlag = 5;
+		}
+		else {
+			HitFly_x = 20;
+			HitFly_y = 20;
+			HitJunpflmcnt = 0;
 		}
 
 }
@@ -260,7 +274,7 @@ void Player::Draw() {
 
 	//アニメーションによって処理を変える
 	if (animFlag == 0) {//立ち
-		changeAnimFlame = 7;
+		changeAnimFlame = 10;
 		animFlameCount++;
 		if (animFlameCount >= changeAnimFlame) {
 			animFlameCount = 0;
@@ -275,7 +289,7 @@ void Player::Draw() {
 	}
 
 	if (animFlag == 1) {//歩き
-		changeAnimFlame = 7;
+		changeAnimFlame = 6;
 		animFlameCount++;
 		if (animFlameCount >= changeAnimFlame) {
 			animFlameCount = 0;
@@ -302,8 +316,18 @@ void Player::Draw() {
 			animIndex = 8;
 		}
 	}
+	if (animFlag == 5) {
+		if (hitArea == R&&animState==R||hitArea==L&&animState==L) {
+			animIndex = 9;
+		}else{
+			animIndex = 13;
+		}
+	}
 
-	if(hp<=0)animIndex = 11;//死亡
+	//死亡
+	if (hp <= 0) { 
+		animIndex = 11;
+	}
 
 	//プレイヤー描画
 	//if (alphaFlag)
@@ -374,28 +398,4 @@ void Player::GetMoveDirection(bool* _dirArray) {
 	if (GetNextPlayerPosY() < GetPlayerPosY()) {
 		_dirArray[0] = true;
 	}
-}
-
-void Player::GetHitPlayerDamage()
-{
-	HitPlayerDamage = true;
-}
-
-void Player::HitFlyDirection(int Direction_1, int Direction_2)
-{
-	if (HitPlayerDamage)
-	{
-		if (Direction_1 != Direction_2)animIndex = 13;
-		else animIndex = 9;
-	}
-}
-
-int Player::GetDirection()
-{
-	return animState;
-}
-
-int Player::GetHP()
-{
-	return hp;
 }
