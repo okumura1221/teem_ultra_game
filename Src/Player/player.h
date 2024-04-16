@@ -2,8 +2,8 @@
 
 
 enum Animation {
-	R,
-	L
+	R,//右
+	L//左
 };
 
 
@@ -40,6 +40,7 @@ protected:
 	bool danger;//ｈｐがピンチかどうか
 
 	bool HitPlayerDamage;//プレイヤーが攻撃を受けた場合
+	int hitArea;//どこから当たったか
 	int HitJunpflmcnt;
 	float HitFly_x;
 	float HitFly_y;
@@ -54,8 +55,8 @@ protected:
 	int bulletState[10];//弾の向き
 	int bulletinterval;//弾の発射間隔
 	int bulletintervalCount;//弾の発射カウント
-	int bulletSizeX;
-	int bulletSizeY;
+	int bulletSizeX;//弾のX大きさ
+	int bulletSizeY;//弾のY大きさ
 	int damage[10];//弾の攻撃力
 
 	float bulletX[10];//弾のX座標
@@ -106,22 +107,17 @@ public:
 	//プレイヤーがジャンプ可能にする
 	void SetJump() { jump = false; }
 
-	//プレイヤーがダメージを受ける
-	void InDamage(int damage) { hp -= damage; }
+	//プレイヤーがダメージを受け、ノックバック
+	void InDamage(int damage, int bullet_state) {
+		hp -= damage;
+		hitArea = bullet_state;
+		HitPlayerDamage = true;
+	}
 
 	//プレイヤーの進んでいる方向をチェック
 	void GetMoveDirection(bool* _dirArray);
 
 
-
-	//HitPlayerDamageの状態をとる
-	void GetHitPlayerDamage();
-	//吹っ飛ぶ方向
-	void HitFlyDirection(int Direction_1, int Direction_2);
-	//キャラの向きをとる
-	int GetDirection();
-	//キャラのHPを取得する
-	int GetHP();
 	//弾
 
 	//弾のx座標を得る
@@ -138,6 +134,9 @@ public:
 
 	//弾の攻撃力を得る
 	int GetBulletDamage(int bullet_index) { return damage[bullet_index]; }
+
+	//弾の向きを得る
+	int GetBulletState(int bullet_index) { return bulletState[bullet_index]; }
 
 	//弾の使用状態を得る
 	bool GetBulletIsUse(int bullet_index) { return isUse[bullet_index]; }
