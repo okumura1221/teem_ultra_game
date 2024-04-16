@@ -48,15 +48,15 @@ void Map::Init() {
 
 void Map::Draw() {
 
-	for (int y = 0; y < MAP_DATA_Y; y++)
-	{
-		for (int x = 0; x < MAP_DATA_X; x++)
+		for (int y = 0; y < MAP_DATA_Y; y++)
 		{
-			// ブロックを描画
-			if (m_MapData[y][x] != 0) {
-				DrawGraph(x * MAP_SIZE, y * MAP_SIZE, mapHandle[m_MapData[y][x]-1], true);
+			for (int x = 0; x < MAP_DATA_X; x++)
+			{
+				// ブロックを描画
+				if (m_MapData[y][x] != 0) {
+					DrawGraph(x * MAP_SIZE, y * MAP_SIZE, mapHandle[m_MapData[y][x] - 1], true);
+				}
 			}
 		}
-	}
 }
 
