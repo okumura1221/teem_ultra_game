@@ -208,7 +208,7 @@ void StepPlay() {
 	{
 		for (int j = 0; j < 3; j++)
 		{
-			cloud_x[i][j] += 3 * (i + j + 1);
+			cloud_x[i][j] += 1 * (i + j + 1);
 			if (cloud_x[i][0] >= (1280 + 484))cloud_x[i][0] = -484;
 			if (cloud_x[i][1] >= (1280 + 252))cloud_x[i][1] = -252;
 			if (cloud_x[i][2] >= (1280 + 541))cloud_x[i][2] = -541;
@@ -258,7 +258,7 @@ void DrawPlay() {
 }
 
 
-
+//‚ 
 //”jŠüˆ—
 void FinPlay() {
 
