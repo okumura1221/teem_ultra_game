@@ -15,7 +15,7 @@
 void Player::Init(int player_no) {
 	
 	//プレイヤー画像読み込み
-
+	
 	LoadDivGraph("Data/Player/player_R.png", 18, 3, 6, 64, 64, playerHandle[0]);
 	LoadDivGraph("Data/Player/player_L.png", 18, 3, 6, 64, 64, playerHandle[1]);
 	
@@ -164,7 +164,7 @@ void Player::Step() {
 
 		
 		//ダメージを受けた時の吹っ飛び処理(左)
-		if (HitPlayerDamage)
+		/*if (HitPlayerDamage)
 		{
 			for (int index = 0; index < 10; index++) {
 				if (bulletX[index] < playerX + playerSizeX) {
@@ -205,8 +205,48 @@ void Player::Step() {
 			HitFly_x = 20;
 			HitFly_y = 20;
 			HitJunpflmcnt = 0;
+		}*/
+
+		if (HitPlayerDamage)
+		{
+			for (int index = 0; index < 10; index++) {
+				if (GetNextPlayerPosX() > bulletX[index]) {
+					playerNextX -= HitFly_x;
+					if (HitFly_x <= 0) HitFly_x = 0;
+					HitFly_x -= 1.2;
+					playerNextY -= HitFly_y;
+					HitFly_y -= 1.2;
+
+					if (HitFly_y <= 0) HitFly_y = 0;
+
+					HitJunpflmcnt++;
+					if (HitJunpflmcnt >= 15)HitPlayerDamage = false;
+				}
+			}
 		}
-		
+		if (HitPlayerDamage)
+		{
+			for (int index = 0; index < 10; index++) {
+				if (GetNextPlayerPosX() < bulletX[index]) {
+					playerNextX += HitFly_x;
+					if (HitFly_x <= 0) HitFly_x = 0;
+					HitFly_x += 1.2;
+					playerNextY -= HitFly_y;
+					HitFly_y -= 1.2;
+
+					if (HitFly_y <= 0) HitFly_y = 0;
+
+					HitJunpflmcnt++;
+					if (HitJunpflmcnt >= 15)HitPlayerDamage = false;
+				}
+			}
+		}
+		else
+		{
+			HitFly_x = 20;
+			HitFly_y = 20;
+			HitJunpflmcnt = 0;
+		}
 
 		//弾の発射
 		if (Input::Push(button[3])) {
